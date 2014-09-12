@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module MedusaApi
+module MedusaRestClient
 	describe Box do
 		before do
 			setup

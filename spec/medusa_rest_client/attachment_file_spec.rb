@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module MedusaApi
+module MedusaRestClient
 	describe AttachmentFile do
 		before do
 			setup

@@ -137,6 +137,15 @@ module MedusaRestClient
 			data.join("\r\n")
 		end
 
+		def self.find_or_create_by_name(name, params = {})
+			obj = self.find(:first, :params => {:q => {:name_eq => name}})
+			unless obj
+				params.merge!(:name => name)
+				obj = self.create(params)
+			end
+			obj
+		end
+
 		#associations
 		def parent
 			p_id = self.attributes["parent_id"]
