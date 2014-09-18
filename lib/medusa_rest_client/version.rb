@@ -1,5 +1,5 @@
 module MedusaRestClient
-  VERSION = "0.0.4"
+  VERSION = "0.0.5"
   class VersionInfo
 
   	def jruby?
@@ -17,7 +17,7 @@ module MedusaRestClient
   	def to_hash
   		hash_info = {}
   		hash_info['warnings']				= []
-  		hash_info['medusa_api']				= MedusaRestClient::VERSION
+  		hash_info['medusa_rest_client']				= MedusaRestClient::VERSION
   		hash_info['ruby']					= {}
   		hash_info['ruby']['version']		= ::RUBY_VERSION
   		hash_info['ruby']['platform']		= ::RUBY_PLATFORM

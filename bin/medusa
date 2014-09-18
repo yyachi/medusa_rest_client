@@ -36,6 +36,7 @@ def start_console
 	end		
 end
 
+p ARGV
 global_options = {}
 global = OptionParser.new do |opts|
 	opts.banner = "medusa: an client for Medusa"

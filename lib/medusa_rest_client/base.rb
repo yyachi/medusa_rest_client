@@ -4,12 +4,17 @@ module MedusaRestClient
 		@@default_config = {'uri' => 'database.misasa.okayama-u.ac.jp/stone/', 'user' => 'admin', 'password' => 'password'}
 		@@config = nil
 		@@boundary = "3948A8"
+		@@pwd_id = nil
+		@@pwd = nil
 		attr_accessor :pref_path
 		def self.pref_path=(pref) @@pref_path = pref end
 		def self.pref_path() @@pref_path end
 		def self.config=(config) @@config = config end
 		def self.config() @@config end
 		def self.init(opts = {})
+			#@@pwd_id = ENV['OROCHI_PWD_ID'] || nil
+			@@pwd_id = ENV['OROCHI_PWD'] || nil
+
 			self.pref_path = opts[:pref_path] || "~/.orochirc"
 			begin
 				self.config = self.read_config

@@ -7,6 +7,37 @@ module MedusaRestClient
 			FakeWeb.clean_registry
 		end
 		
+		describe "pwd_id", :current => true do
+			before do
+				Base.init
+			end
+			it { expect(Box.pwd_id).to eq(ENV['OROCHI_PWD']) }
+		end
+
+		describe "chdir" do
+			before do
+				FakeWeb.allow_net_connect = true
+				Box.chdir(path)
+			end
+			context "to /ISEI/main" do
+				let(:path){ "/ISEI/main"}
+				it { expect(Box.pwd.to_s).to eq(path) }
+			end
+
+			context "to /ISEI" do
+				let(:path){ "/ISEI"}
+				it { expect(Box.pwd.to_s).to eq(path) }
+			end
+
+			context "to /ISEC/main" do
+				let(:path){ "/ISEC/main"}
+				it { expect(Box.pwd.to_s).not_to eq(path) }
+			end
+
+			after do
+				FakeWeb.allow_net_connect = false
+			end
+		end
 		# describe "relatives", :current => true do
 		# 	let(:box) { Box.create(:name => 'tmp_1') }
 		# 	let(:stone) { Stone.create(:name => 'deleteme-1')}
