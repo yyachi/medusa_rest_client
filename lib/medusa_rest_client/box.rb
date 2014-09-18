@@ -30,7 +30,7 @@ module MedusaRestClient
 		def self.chdir(path)
 			if box = self.find_by_path(path)
 				self.pwd_id = box.global_id
-				@@pwd = path
+				#@@pwd = path
 				return true
 			else
 				return false
