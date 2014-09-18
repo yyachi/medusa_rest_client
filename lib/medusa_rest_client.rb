@@ -1,6 +1,7 @@
 require 'logger'
 require 'active_resource'
 require 'yaml'
+require 'pathname'
 require 'medusa_rest_client/version'
 require 'medusa_rest_client/my_association'
 require 'medusa_rest_client/base'
