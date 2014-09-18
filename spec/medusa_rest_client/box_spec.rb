@@ -15,10 +15,39 @@ module MedusaRestClient
 		end
 
 		describe "chdir" do
+			let(:home_path){ '/ISEI/main'}
 			before do
 				FakeWeb.allow_net_connect = true
+				Box.home = home_path
 				Box.chdir(path)
 			end
+
+			context "without path and home" do
+				let(:path){ nil }
+				let(:home_path){ '/ISEI/main'}
+				it { expect(Box.pwd.to_s).to eq(home_path) }
+			end
+
+
+			context "with relative path and pwd", :current => true do
+				before do
+					Box.chdir(rpath)
+				end
+				let(:path){ '/ISEI'}
+				let(:rpath){ 'main'}
+				it { expect(Box.pwd.to_s).to eq('/ISEI/main') }				
+			end
+
+			context "with relative path and no pwd", :current => true do
+				before do
+					Box.pwd_id = nil
+					Box.chdir(rpath)
+				end
+				let(:path){ '/ISEI'}
+				let(:rpath){ 'ISEI'}
+				it { expect(Box.pwd.to_s).to eq('/ISEI') }				
+			end
+
 			context "to /ISEI/main" do
 				let(:path){ "/ISEI/main"}
 				it { expect(Box.pwd.to_s).to eq(path) }

@@ -5,8 +5,53 @@ module MedusaRestClient
 		@@config = nil
 		@@boundary = "3948A8"
 		@@pwd_id = nil
+		@@home_id = nil
 		@@pwd = nil
+		@@home = nil
 		attr_accessor :pref_path
+
+		def self.home_id()
+			@@home_id
+		end
+
+		def self.home_id=(id)
+			@@home_id = id
+			@@home = nil
+		end
+
+		def self.home()
+			return "/" unless @@home_id
+			unless @@home
+				@@home = Record.find(@@home_id).path
+			end
+			return @@home
+		end
+
+		def self.home=(path)
+			if home = Box.find_by_path(path)
+				self.home_id = home.global_id
+				@@home = home.fullpath
+			end
+		end
+
+		def self.pwd()
+			return "/" unless @@pwd_id
+			unless @@pwd
+				@@pwd = Record.find(@@pwd_id).fullpath
+			end
+			return @@pwd
+		end
+
+		def self.pwd_id()
+			@@pwd_id
+		end
+
+		def self.pwd_id=(id)
+			@@pwd_id = id
+			@@pwd = nil
+		end
+
+
 		def self.pref_path=(pref) @@pref_path = pref end
 		def self.pref_path() @@pref_path end
 		def self.config=(config) @@config = config end
@@ -14,7 +59,7 @@ module MedusaRestClient
 		def self.init(opts = {})
 			#@@pwd_id = ENV['OROCHI_PWD_ID'] || nil
 			@@pwd_id = ENV['OROCHI_PWD'] || nil
-
+			@@home_id = ENV['OROCHI_HOME'] || nil		
 			self.pref_path = opts[:pref_path] || "~/.orochirc"
 			begin
 				self.config = self.read_config
