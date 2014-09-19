@@ -43,5 +43,9 @@ module MedusaRestClient
 		def fullpath
 			File.join(path, name)
 		end
+
+		def box
+			parent
+		end
 	end
 end

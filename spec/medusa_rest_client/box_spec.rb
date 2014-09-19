@@ -7,6 +7,46 @@ module MedusaRestClient
 			FakeWeb.clean_registry
 		end
 		
+		describe "parent" do
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+			end
+
+			context "of /ISEI/main" do
+				let(:box){ Box.find_by_path('/ISEI/main')}
+				before do
+					box
+				end
+				it { expect(box.parent.fullpath).to eq('/ISEI')}
+			end
+
+			after do
+				FakeWeb.allow_net_connect = false				
+			end
+
+		end
+
+		describe "box", :current => true do
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+			end
+
+			context "of /ISEI/main" do
+				let(:box){ Box.find_by_path('/ISEI/main')}
+				before do
+					box
+				end
+				it { expect(box.box.fullpath).to eq('/ISEI')}
+			end
+
+			after do
+				FakeWeb.allow_net_connect = false				
+			end
+
+		end
+
 		describe "pwd_id" do
 			before do
 				Base.init
