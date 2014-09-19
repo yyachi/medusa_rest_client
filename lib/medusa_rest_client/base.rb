@@ -20,14 +20,17 @@ module MedusaRestClient
 		end
 
 		def self.home()
-			return "/" unless @@home_id
-			unless @@home
+			return "/" if @@home_id.blank?
+			if @@home.blank?
 				@@home = Record.find(@@home_id).path
 			end
 			return @@home
 		end
 
 		def self.home=(path)
+			if path.blank?
+				self.home_id = nil
+			end
 			if home = Box.find_by_path(path)
 				self.home_id = home.global_id
 				@@home = home.fullpath
@@ -35,8 +38,8 @@ module MedusaRestClient
 		end
 
 		def self.pwd()
-			return "/" unless @@pwd_id
-			unless @@pwd
+			return "/" if @@pwd_id.blank?
+			if @@pwd.blank?
 				@@pwd = Record.find(@@pwd_id).fullpath
 			end
 			return @@pwd

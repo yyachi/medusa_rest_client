@@ -4,9 +4,6 @@ module MedusaRestClient
 #		@@pwd_id = nil
 		#has_many :stones, :class_name => 'medusa_api/stone'
 		def self.find_by_path(path)
-			unless path
-				path = self.home
-			end
 			path = Pathname.new(path)
 			unless path.absolute?
 				path = Pathname.new(self.pwd) + path
@@ -23,11 +20,17 @@ module MedusaRestClient
 			else
 				query[:path_eq] = dirname.to_s
 			end
-
 			self.find(:first, :params => {:q => query})
 		end
 
 		def self.chdir(path)
+			path = self.home if path.blank?
+
+			if path == '/'
+				self.pwd_id = nil
+				return true
+			end
+
 			if box = self.find_by_path(path)
 				self.pwd_id = box.global_id
 				#@@pwd = path

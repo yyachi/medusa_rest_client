@@ -7,6 +7,64 @@ module MedusaRestClient
 			FakeWeb.clean_registry
 		end
 
+
+		describe "find_by_path" do
+			context "with absolute path" do
+				subject{ Stone.find_by_path(path) }
+				let(:path){ '/ISEI/main/clean-lab/Allende' }
+				before do
+					FakeWeb.allow_net_connect = true
+					#@stone = Stone.find_by_path(path)
+				end
+				it { expect(subject.fullpath).to eq(path)  }
+				after do
+					FakeWeb.allow_net_connect = false					
+				end
+			end
+
+			context "with root path " do
+				subject{ Stone.find_by_path(path) }
+				let(:path){ '/deleteme-1' }
+				before do
+					FakeWeb.allow_net_connect = true
+					#@stone = Stone.find_by_path(path)
+				end
+				it { expect(subject.fullpath).to eq(path)  }
+				after do
+					FakeWeb.allow_net_connect = false					
+				end
+			end
+
+			context "with relative path on root" do
+				subject{ Stone.find_by_path(path) }
+				let(:path){ 'deleteme-1' }
+				before do
+					FakeWeb.allow_net_connect = true
+					Box.chdir("/")
+					#@stone = Stone.find_by_path(path)
+				end
+				it { expect(subject.fullpath).to eq('/' + path)  }
+				after do
+					FakeWeb.allow_net_connect = false					
+				end
+			end
+
+			context "with relative path on /ISEI/main/clean-lab" do
+				subject{ Stone.find_by_path(path) }
+				let(:pwd) {'/ISEI/main/clean-lab'}
+				let(:path){ 'Allende' }
+				before do
+					FakeWeb.allow_net_connect = true
+					Box.chdir(pwd)
+					#@stone = Stone.find_by_path(path)
+				end
+				it { expect(subject.fullpath).to eq(pwd + '/' + path)  }
+				after do
+					FakeWeb.allow_net_connect = false					
+				end
+			end
+
+		end
 		# describe "find_or_create_by_name finds existing obj", :current => false do
 		# 	subject { Stone.find_or_create_by_name(name) }
 		# 	let(:name) { "deleteme-123423"}

@@ -7,11 +7,89 @@ module MedusaRestClient
 			FakeWeb.clean_registry
 		end
 		
-		describe "pwd_id", :current => true do
+		describe "pwd_id" do
 			before do
 				Base.init
 			end
 			it { expect(Box.pwd_id).to eq(ENV['OROCHI_PWD']) }
+		end
+
+		describe "pwd", :current => true do
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+			end
+
+			context "when valid pwd_id" do
+				let(:box){ Box.find_by_path('/ISEI/main')}
+				before do
+					Box.pwd_id = box.global_id
+				end
+				it { expect(Box.pwd).to eq(box.fullpath)}
+			end
+
+			context "when pwd_id = nil" do
+				before do
+					Box.pwd_id = nil
+				end
+				it { expect(Box.pwd).to eq('/')}
+			end
+
+			context "when pwd_id = ''" do
+				before do
+					Box.pwd_id = ''
+				end
+				it { expect(Box.pwd).to eq('/')}
+			end
+
+			after do
+				FakeWeb.allow_net_connect = false				
+			end
+		end
+
+		describe "find_by_path" do
+
+			before do
+				FakeWeb.allow_net_connect = true				
+			end
+			context "with absolute path" do
+				let(:path){'/ISEI/main'}
+				before do
+					@box = Box.find_by_path(path)
+				end
+				it { expect(@box.fullpath).to eq(path)}
+			end
+
+			context "with relative path" do
+				let(:path){'ISEI'}
+				before do
+					@box = Box.find_by_path(path)
+				end
+				it { expect(@box.fullpath).to eq('/' + path)}
+			end
+
+			context "with relative path" do
+				let(:path){'main'}
+				before do
+					Box.chdir('/ISEI')
+					@box = Box.find_by_path(path)
+				end
+				it { expect(@box.fullpath).to eq('/ISEI/' + path)}
+			end
+
+			context "with empty path on /ISEI" do
+				let(:path){''}
+				before do
+					Box.chdir('/ISEI')					
+					@box = Box.find_by_path(path)
+				end
+				it { expect(@box.fullpath).to eq('/ISEI')}
+			end
+
+
+			after do
+				FakeWeb.allow_net_connect = false				
+			end
 		end
 
 		describe "chdir" do
@@ -22,14 +100,31 @@ module MedusaRestClient
 				Box.chdir(path)
 			end
 
+			context "without path and blank home" do
+				before do
+					Box.home_id = nil
+					p Box.home
+					Box.chdir(path)
+				end
+				let(:path){ nil }
+				#let(:home_path){ nil }
+				it { expect(Box.pwd.to_s).to eq('/') }
+			end
+
 			context "without path and home" do
 				let(:path){ nil }
 				let(:home_path){ '/ISEI/main'}
 				it { expect(Box.pwd.to_s).to eq(home_path) }
 			end
 
+			context "with empty path and home" do
+				let(:path){ "" }
+				let(:home_path){ '/ISEI/main'}
+				it { expect(Box.pwd.to_s).to eq(home_path) }
+			end
 
-			context "with relative path and pwd", :current => true do
+
+			context "with relative path and pwd" do
 				before do
 					Box.chdir(rpath)
 				end
@@ -38,7 +133,7 @@ module MedusaRestClient
 				it { expect(Box.pwd.to_s).to eq('/ISEI/main') }				
 			end
 
-			context "with relative path and no pwd", :current => true do
+			context "with relative path and no pwd" do
 				before do
 					Box.pwd_id = nil
 					Box.chdir(rpath)
