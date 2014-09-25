@@ -20,7 +20,9 @@ module MedusaRestClient
 		self.class.entries
 	end
 
-
+	def global_id
+		nil
+	end
 
 	def self.boxes
 		Box.on_root
