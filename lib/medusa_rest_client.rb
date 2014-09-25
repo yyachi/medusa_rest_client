@@ -8,6 +8,7 @@ require 'medusa_rest_client/base'
 require 'medusa_rest_client/record'
 require 'medusa_rest_client/stone'
 require 'medusa_rest_client/box'
+require 'medusa_rest_client/box_root'
 require 'medusa_rest_client/place'
 require 'medusa_rest_client/analysis'
 require 'medusa_rest_client/attachment_file'
@@ -24,4 +25,18 @@ require 'medusa_rest_client/author'
 
 module MedusaRestClient
   # Your code goes here...
+end
+
+module ActiveResource # :nodoc:
+  class Collection # :nodoc:
+  	def previous_page
+  		params = original_params.merge(:page => (original_params[:page] ? original_params[:page] - 1 : 2) )
+  		resource_class.find(:all, :params => params)  		
+  	end
+
+  	def next_page
+  		params = original_params.merge(:page => (original_params[:page] ? original_params[:page] + 1 : 2) )
+  		resource_class.find(:all, :params => params)
+  	end
+  end
 end

@@ -3,7 +3,7 @@ module MedusaRestClient
 		def self.find_by_path(path)
 			path = Pathname.new(path)
 			unless path.absolute?
-				path = Pathname.new(self.pwd) + path
+				path = Pathname.new(Box.pwd) + path
 			end
 
 			path = path.cleanpath
@@ -20,7 +20,9 @@ module MedusaRestClient
 			else
 				return nil
 			end
-			self.find(:first, :params => {:q => query})
+			obj = self.find(:first, :params => {:q => query})
+			raise RuntimeError.new("#{path}: No such stone") unless obj
+			obj			
 		end
 
 		def fullpath

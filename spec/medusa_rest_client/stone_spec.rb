@@ -64,6 +64,21 @@ module MedusaRestClient
 				end
 			end
 
+			context "with relative invalid path on /ISEI/main/clean-lab" do
+				subject{ Stone.find_by_path(path) }
+				let(:pwd) {'/ISEI/main/clean-lab'}
+				let(:path){ 'Alle' }
+				before do
+					FakeWeb.allow_net_connect = true
+					Box.chdir(pwd)
+					#@stone = Stone.find_by_path(path)
+				end
+				it { expect{ subject.fullpath }.to raise_error(RuntimeError)  }
+				after do
+					FakeWeb.allow_net_connect = false					
+				end
+			end
+
 		end
 		# describe "find_or_create_by_name finds existing obj", :current => false do
 		# 	subject { Stone.find_or_create_by_name(name) }

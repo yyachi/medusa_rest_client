@@ -4,55 +4,8 @@ module MedusaRestClient
 		@@default_config = {'uri' => 'database.misasa.okayama-u.ac.jp/stone/', 'user' => 'admin', 'password' => 'password'}
 		@@config = nil
 		@@boundary = "3948A8"
-		@@pwd_id = nil
-		@@home_id = nil
-		@@pwd = nil
-		@@home = nil
 		attr_accessor :pref_path
 
-		def self.home_id()
-			@@home_id
-		end
-
-		def self.home_id=(id)
-			@@home_id = id
-			@@home = nil
-		end
-
-		def self.home()
-			return "/" if @@home_id.blank?
-			if @@home.blank?
-				@@home = Record.find(@@home_id).path
-			end
-			return @@home
-		end
-
-		def self.home=(path)
-			if path.blank?
-				self.home_id = nil
-			end
-			if home = Box.find_by_path(path)
-				self.home_id = home.global_id
-				@@home = home.fullpath
-			end
-		end
-
-		def self.pwd()
-			return "/" if @@pwd_id.blank?
-			if @@pwd.blank?
-				@@pwd = Record.find(@@pwd_id).fullpath
-			end
-			return @@pwd
-		end
-
-		def self.pwd_id()
-			@@pwd_id
-		end
-
-		def self.pwd_id=(id)
-			@@pwd_id = id
-			@@pwd = nil
-		end
 
 
 		def self.pref_path=(pref) @@pref_path = pref end
@@ -122,6 +75,14 @@ module MedusaRestClient
 
 		def self.get_content_type_from_extname(extname)
 			content_types.fetch(extname)
+		end
+
+		def self.mycleanpath(path)
+			path = Pathname.new(path)
+			unless path.absolute?
+				path = Pathname.new(self.pwd) + path
+			end
+			path = path.cleanpath
 		end
 
 		def self.find_by_name(name)

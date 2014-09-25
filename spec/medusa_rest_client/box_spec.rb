@@ -6,6 +6,66 @@ module MedusaRestClient
 			setup
 			FakeWeb.clean_registry
 		end
+
+		describe "entries" do
+			subject { Box.entries(path) }
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+			end
+
+
+			context "with root path" do
+				let(:path){ "/" }
+				before do
+					path
+				end
+				it { expect(subject).to be_an_instance_of(Array) }
+			end
+
+
+			context "with fullpath" do
+				let(:path){ "/ISEI/main/clean-lab" }
+				before do
+					path
+				end
+				it { expect(subject).to be_an_instance_of(Array) }
+			end
+
+			context "with relative path" do
+				let(:pwd){"/ISEI/main"}
+				let(:path){ "./clean-lab" }
+				before do
+					Box.chdir(pwd)
+					path
+				end
+				it { expect(subject).to be_an_instance_of(Array) }
+			end
+
+			context "with invalid path" do
+				let(:path){ "/ISEI/main/clean-l" }
+				before do
+					path
+				end
+				it { expect{Box.entries(path)}.to raise_error(RuntimeError) }
+			end
+
+			after do
+				FakeWeb.allow_net_connect = false				
+			end			
+		end
+
+		describe "on_root" do
+			subject{ Box.on_root }
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+			end
+			it { expect(subject).to be_an_instance_of(ActiveResource::Collection) }
+			after do
+				FakeWeb.allow_net_connect = false				
+			end			
+		end
 		
 		describe "parent" do
 			before do
@@ -27,7 +87,7 @@ module MedusaRestClient
 
 		end
 
-		describe "box", :current => true do
+		describe "box" do
 			before do
 				setup
 				FakeWeb.allow_net_connect = true
@@ -54,7 +114,7 @@ module MedusaRestClient
 			it { expect(Box.pwd_id).to eq(ENV['OROCHI_PWD']) }
 		end
 
-		describe "pwd", :current => true do
+		describe "pwd" do
 			before do
 				setup
 				FakeWeb.allow_net_connect = true
@@ -100,6 +160,15 @@ module MedusaRestClient
 				it { expect(@box.fullpath).to eq(path)}
 			end
 
+			context "with root path" do
+				let(:path){'/'}
+				before do
+					@box = Box.find_by_path(path)
+				end
+				it { expect(@box.fullpath).to eq(path)}
+			end
+
+
 			context "with relative path" do
 				let(:path){'ISEI'}
 				before do
@@ -137,13 +206,12 @@ module MedusaRestClient
 			before do
 				FakeWeb.allow_net_connect = true
 				Box.home = home_path
-				Box.chdir(path)
+#				Box.chdir(path)
 			end
 
 			context "without path and blank home" do
 				before do
 					Box.home_id = nil
-					p Box.home
 					Box.chdir(path)
 				end
 				let(:path){ nil }
@@ -152,6 +220,9 @@ module MedusaRestClient
 			end
 
 			context "without path and home" do
+				before do
+					Box.chdir(path)
+				end
 				let(:path){ nil }
 				let(:home_path){ '/ISEI/main'}
 				it { expect(Box.pwd.to_s).to eq(home_path) }
@@ -166,6 +237,7 @@ module MedusaRestClient
 
 			context "with relative path and pwd" do
 				before do
+					Box.chdir(path)
 					Box.chdir(rpath)
 				end
 				let(:path){ '/ISEI'}
@@ -184,11 +256,17 @@ module MedusaRestClient
 			end
 
 			context "to /ISEI/main" do
+				before do
+					Box.chdir(path)
+				end
 				let(:path){ "/ISEI/main"}
 				it { expect(Box.pwd.to_s).to eq(path) }
 			end
 
 			context "to /ISEI" do
+				before do
+					Box.chdir(path)
+				end
 				let(:path){ "/ISEI"}
 				it { expect(Box.pwd.to_s).to eq(path) }
 			end
