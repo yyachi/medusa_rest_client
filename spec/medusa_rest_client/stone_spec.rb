@@ -125,14 +125,14 @@ module MedusaRestClient
 			end
 			it { expect(nil).to be_nil }
 		end
-		describe "#upload_file" do
+		describe "#upload_file", :current => true do
 			let(:upload_file){ 'tmp/upload.txt' }
 			before do
 				setup_empty_dir('tmp')
 				setup_file(upload_file)
 				stone = FactoryGirl.build(:stone, id: 10)
 				FakeWeb.register_uri(:post, %r|/stones/10/attachment_files.json|, :body => FactoryGirl.build(:attachment_file).to_json, :status => ["201", "Created"])								
-				stone.upload_file(:file => upload_file)
+				stone.upload_file(:file => upload_file, :filename => 'example.txt')
 			end
 			it { expect(FakeWeb).to have_requested(:post, %r|/stones/10/attachment_files.json|) }
 		end

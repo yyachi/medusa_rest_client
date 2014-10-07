@@ -3,7 +3,9 @@ module MedusaRestClient
 
         def self.instantiate_record(record, prefix_options = {})
 			myclass = ("MedusaRestClient::" + record["datum_type"].classify).constantize
-			attributes = record["datum_attributes"]
+			attributes = record["datum_attributes"].dup
+#			property = record.delete("datum_attributes")
+#			attributes["record_property"] = property
 			myclass.new(attributes, true)
         end
 

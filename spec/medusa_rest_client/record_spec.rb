@@ -3,7 +3,25 @@ require 'spec_helper'
 module MedusaRestClient
 	describe Record do
 
-		describe ".box?", :current => true do
+		describe "#record_property", :current => true do
+			subject{ Record.find(arg).record_property }
+			let(:arg){ obj.global_id }
+			let(:obj){ Stone.find(:first) }
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+				obj
+			end
+
+			it { expect(subject.reload).to be_nil }
+
+			after do
+				FakeWeb.allow_net_connect = false					
+			end				
+
+		end
+
+		describe ".box?" do
 			before do
 				setup
 			end

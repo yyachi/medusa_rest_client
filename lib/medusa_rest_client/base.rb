@@ -109,7 +109,8 @@ module MedusaRestClient
 
 		def upload_file(opts = {})
 			raise "specify :file" unless opts[:file]
-			file = AttachmentFile.new(:file => opts[:file])
+			#file = AttachmentFile.new(:file => opts[:file])
+			file = AttachmentFile.new(opts)
 			#filepath = opts[:file]
 			prefix = self.class.prefix
 			collection_name = self.class.collection_name + '/' + self.id.to_s + '/' + AttachmentFile.collection_name
@@ -120,21 +121,16 @@ module MedusaRestClient
 		end
 
 		def to_multipart_form_data(opts = {})
+
 			boundary = opts[:boundary] || @@boundary
 			model = opts[:model] || self.class.element_name
-			data = []
-			attributes.each do |key , value|
-				unless key == 'file'
-				  data << "--#{boundary}"
-				  data << "Content-disposition: form-data; name=\"#{model}[#{key}]"
-				  data << ""
-				  data << value
-				end
-			end
 
-			path = attributes['file']
+			path = attributes.delete('file')
+			data = []
+
 			if path
-				filename = File.basename(path)
+				filename = attributes.delete('filename') || File.basename(path)
+				#filename = File.basename(path)
 				content_type = self.class.get_content_type_from_extname(File.extname(path))				
 				data << "--#{boundary}"
 				data << "Content-Disposition: form-data; name=\"#{model}[data]\"; filename=\"#{filename}\""
@@ -144,6 +140,15 @@ module MedusaRestClient
 				  file.binmode
 				  file.read
 				}
+			end
+
+			attributes.each do |key , value|
+				unless key == 'file'
+				  data << "--#{boundary}"
+				  data << "Content-disposition: form-data; name=\"#{model}[#{key}]"
+				  data << ""
+				  data << value
+				end
 			end
 			data << ""
 			data << "--#{boundary}--"
