@@ -116,7 +116,8 @@ module MedusaRestClient
 			collection_name = self.class.collection_name + '/' + self.id.to_s + '/' + AttachmentFile.collection_name
 			format_extension = self.class.format_extension
         	upload_path = "#{prefix}#{collection_name}#{format_extension}"
-        	post_multipart_form_data(file.to_multipart_form_data, upload_path)
+        	file.post_multipart_form_data(file.to_multipart_form_data, upload_path)
+        	return file
 			#attachment_file = AttachmentFile.upload()
 		end
 

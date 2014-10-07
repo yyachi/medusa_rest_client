@@ -137,5 +137,29 @@ module MedusaRestClient
 			it { expect(FakeWeb).to have_requested(:post, %r|/stones/10/attachment_files.json|) }
 		end
 
+		describe "#upload_file to real server", :server => true do
+			#subject{ stone.upload_file(:file => upload_) }
+			let(:stone){ Stone.create(:name => 'sample-1')}
+			let(:upload_file){ 'tmp/Desert.jpg'}
+			let(:filename){'example.jpg'}
+			before do
+				setup
+				FakeWeb.clean_registry
+				FakeWeb.allow_net_connect = true
+				setup_empty_dir('tmp')
+				setup_file(upload_file)
+				stone
+				@file = stone.upload_file(:file => upload_file, :filename => filename )
+			end
+			it { expect(stone.attachment_files[0].data_file_name).to eql(filename) }
+
+			after do
+				@file.destroy
+				stone.destroy
+				FakeWeb.allow_net_connect = false					
+			end				
+
+		end
+
 	end
 end
