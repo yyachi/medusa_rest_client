@@ -137,6 +137,23 @@ module MedusaRestClient
 			it { expect(FakeWeb).to have_requested(:post, %r|/stones/10/attachment_files.json|) }
 		end
 
+		describe "#upload_file with tmpfile", :current => true do
+			#let(:upload_file){ tempfile.path }
+			let(:temp){ Tempfile.new('foo') }
+			before do
+				#temp = Tempfile.new('foo')
+				temp.write "Hello world"
+				temp.close
+				#setup_empty_dir('tmp')
+				#setup_file(upload_file)
+				stone = FactoryGirl.build(:stone, id: 10)
+				FakeWeb.register_uri(:post, %r|/stones/10/attachment_files.json|, :body => FactoryGirl.build(:attachment_file).to_json, :status => ["201", "Created"])								
+				stone.upload_file(:file => temp.path, :filename => 'example.txt')
+			end
+			it { expect(FakeWeb).to have_requested(:post, %r|/stones/10/attachment_files.json|) }
+		end
+
+
 		describe "#upload_file to real server", :server => true do
 			#subject{ stone.upload_file(:file => upload_) }
 			let(:stone){ Stone.create(:name => 'sample-1')}

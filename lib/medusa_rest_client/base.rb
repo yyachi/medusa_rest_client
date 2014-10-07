@@ -73,8 +73,13 @@ module MedusaRestClient
 	      	}						
 		end
 
+		def self.default_content_type
+			"application/octet-stream"
+		end
+
 		def self.get_content_type_from_extname(extname)
-			content_types.fetch(extname)
+			#content_types.fetch(extname)
+			content_types[extname]
 		end
 
 		def self.mycleanpath(path)
@@ -132,7 +137,7 @@ module MedusaRestClient
 			if path
 				filename = attributes.delete('filename') || File.basename(path)
 				#filename = File.basename(path)
-				content_type = self.class.get_content_type_from_extname(File.extname(path))				
+				content_type = self.class.get_content_type_from_extname(File.extname(filename))	|| self.class.default_content_type			
 				data << "--#{boundary}"
 				data << "Content-Disposition: form-data; name=\"#{model}[data]\"; filename=\"#{filename}\""
 				data << "Content-Type: #{content_type}"
