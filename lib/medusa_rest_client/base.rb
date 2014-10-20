@@ -112,6 +112,35 @@ module MedusaRestClient
 			end			
 		end
 
+		#def self.element_path_with_format_extension(id, prefix_options = {}, query_options = nil)
+		#	check_prefix_options(prefix_options)
+		#	prefix_options, query_options = split_options(prefix_options) if query_options.nil?
+		#	"#{prefix(prefix_options)}#{collection_name}/#{URI.parser.escape id.to_s}#{query_string(query_options)}"
+		#end
+
+
+		def self.download_single(scope, options)
+	 		prefix_options, query_options = split_options(options[:params])
+			path = element_path(scope, prefix_options, query_options)
+			basename = File.basename(path)
+			File.open(basename, 'wb') {|f|
+				f.puts connection.get(path, headers).body
+			}
+		end
+
+		def self.download_one(options)
+			content = nil
+			case from = options[:from]
+				when Symbol
+					content = get(from, options[:params])
+				when String
+					path = "#{from}#{query_string(options[:params])}"
+					content = connection.get(path, headers).body
+			end
+			content
+		end
+
+
 		def upload_file(opts = {})
 			raise "specify :file" unless opts[:file]
 			#file = AttachmentFile.new(:file => opts[:file])

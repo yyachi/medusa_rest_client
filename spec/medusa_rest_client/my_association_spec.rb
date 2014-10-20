@@ -23,7 +23,7 @@ module MedusaRestClient
 				it { expect(FakeWeb).to have_requested(:put, %r|#{association.element_path(stone_1)}|) }
 			end
 
-			context "#.to_a", :current => true do
+			context "#.to_a" do
 				before do
 					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => [stone_1].to_json, :status => ["200", ""])												
 					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/boxes.json|, :body => [box_1, box_2].to_json, :status => ["200", ""])												
@@ -43,11 +43,13 @@ module MedusaRestClient
 			let(:association){ MyAssociation.new(obj, Stone) }
 			let(:obj) { Box.find(obj_id)}
 			let(:obj_id) { 10 }
+			let(:stones) { [stone_1] }
 			let(:stone_1){ FactoryGirl.build(:stone) }
+
 			before do
 				setup
 				FactoryGirl.remote(:box, id: obj_id)
-				FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => [stone_1].to_json, :status => ["200", ""])												
+				FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => stones.to_json, :status => ["200", ""])												
 			end
 			context "#to_a" do
 				before do
@@ -84,6 +86,16 @@ module MedusaRestClient
 				}
 			end
 
+			context "#.empty?", :current => true do
+				before do
+					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => [].to_json, :status => ["200", ""])										
+					association
+				end
+				it {
+					expect(association.size).to eq(0)
+					expect(association.empty?).to be_truthy
+				}
+			end
 			context "#each" do
 				before do
 					association.each do |a|

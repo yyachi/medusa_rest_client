@@ -2,24 +2,63 @@ require 'spec_helper'
 
 module MedusaRestClient
 	describe Record do
-
-		describe "#record_property", :current => true do
-			subject{ Record.find(arg).record_property }
+		describe ".download_casteml", :current => true do
+			let(:filename){ arg + ".pml"}
 			let(:arg){ obj.global_id }
-			let(:obj){ Stone.find(:first) }
+			let(:opts){ {} }
+			let(:obj){ Stone.find(:first)}
 			before do
 				setup
 				FakeWeb.allow_net_connect = true
 				obj
+				Record.download_casteml(arg, opts)
 			end
 
-			it { expect(subject.reload).to be_nil }
+			it { expect(File.exists?(filename)).to be_truthy}
 
 			after do
-				FakeWeb.allow_net_connect = false					
-			end				
-
+				File.unlink(filename)
+				FakeWeb.allow_net_connect = false
+			end
 		end
+
+		describe ".download" do
+			subject{ Record.download_single(arg, opts)}
+			let(:filename){ arg + ".json"}
+			let(:arg){ obj.global_id }
+			let(:opts){ {} }
+			let(:obj){ Stone.find(:first)}
+			before do
+				setup
+				FakeWeb.allow_net_connect = true
+				obj
+				Record.download_single(arg, opts)
+			end
+
+			it { expect(File.exists?(filename)).to be_truthy}
+
+			after do
+				File.unlink(filename)
+				FakeWeb.allow_net_connect = false
+			end
+		end
+		# describe "#record_property", :current => true do
+		# 	subject{ Record.find(arg).record_property }
+		# 	let(:arg){ obj.global_id }
+		# 	let(:obj){ Stone.find(:first) }
+		# 	before do
+		# 		setup
+		# 		FakeWeb.allow_net_connect = true
+		# 		obj
+		# 	end
+
+		# 	it { expect(subject.reload).to be_nil }
+
+		# 	after do
+		# 		FakeWeb.allow_net_connect = false					
+		# 	end				
+
+		# end
 
 		describe ".box?" do
 			before do

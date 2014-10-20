@@ -56,8 +56,12 @@ module MedusaRestClient
   		end
   	end
 
+    def empty?
+      size == 0 ? true : false
+    end
+
   	def subclass_find(subclass)
-		subclass.find(:all, :from => "#{@resource.class.prefix}#{@resource.class.collection_name}/#{@resource.id}/#{subclass.collection_name}#{subclass.format_extension}")
+  		subclass.find(:all, :from => "#{@resource.class.prefix}#{@resource.class.collection_name}/#{@resource.id}/#{subclass.collection_name}#{subclass.format_extension}")
   	end
 
   	def method_missing(method_id, *args, &block)
