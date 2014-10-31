@@ -1,8 +1,9 @@
-#require 'spec_helper'
-require 'medusa_rest_client'
+require 'spec_helper'
 module MedusaRestClient
+
 	describe Chemistry do
 		before do
+			FakeWeb.allow_net_connect = true
 			#FakeWeb.clean_registry
  			ActiveResource::Base.logger = Logger.new(STDOUT)
   			ActiveResource::Base.logger.level = Logger::DEBUG
@@ -60,5 +61,9 @@ module MedusaRestClient
 
 
 		end
+		after do
+			FakeWeb.allow_net_connect = false
+		end
+
 	end
 end

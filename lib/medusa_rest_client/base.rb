@@ -4,43 +4,11 @@ module MedusaRestClient
 		self.prefix = MedusaRestClient.prefix
 		self.user = MedusaRestClient.user
 		self.password = MedusaRestClient.password
-		
-		@@pref_path = nil
-		@@default_config = {'uri' => 'database.misasa.okayama-u.ac.jp/stone/', 'user' => 'admin', 'password' => 'password'}
-		@@config = nil
+
 		@@boundary = "3948A8"
-		attr_accessor :pref_path
-
-
-
-		def self.pref_path=(pref) @@pref_path = pref end
-		def self.pref_path() @@pref_path end
-		def self.config=(config) @@config = config end
-		def self.config() @@config end
 		def self.init(opts = {})
-			#@@pwd_id = ENV['OROCHI_PWD_ID'] || nil
 			@@pwd_id = ENV['OROCHI_PWD'] || nil
 			@@home_id = ENV['OROCHI_HOME'] || nil		
-			self.pref_path = opts[:pref_path] || "~/.orochirc"
-			begin
-				self.config = self.read_config
-			rescue
-				self.config = @@default_config
-				self.write_config
-			end
-
-			self.site = self.myuri.scheme + '://' + self.myuri.host + (self.myuri.port ? ":#{self.myuri.port}" : "")
-			self.prefix = self.myuri.path
-			self.user = self.config['user']
-			self.password = self.config['password']
-
-		end
-
-		def self.myuri
-			uri_string = self.config['uri']
-			uri_string = "http://" + uri_string unless (/:\/\// =~ uri_string)
-			uri_string = uri_string + "/" unless (/\/\z/ =~ uri_string)
-			myuri = URI.parse(uri_string)				
 		end
 
 		def self.site_with_userinfo
@@ -48,19 +16,6 @@ module MedusaRestClient
 			uri = self.site.dup
 			uri.userinfo = [self.user, self.password]
 			uri
-		end
-
-		def self.read_config
-			config = YAML.load(File.read(File.expand_path(self.pref_path)))
-		end
-
-		def self.write_config
-			config = Hash.new
-			config = self.config
-			STDERR.puts("writing |#{File.expand_path(self.pref_path)}|")
-			open(File.expand_path(self.pref_path), "w") do |f|
-				YAML.dump(config, f)
-			end
 		end
 
 		def self.content_types

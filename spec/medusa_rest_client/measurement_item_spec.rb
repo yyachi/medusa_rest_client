@@ -1,9 +1,11 @@
 require 'medusa_rest_client'
 module MedusaRestClient
 	describe MeasurementItem do
+		before do
+			FakeWeb.allow_net_connect = true
+		end
+
 		describe ".find" do
-			before do
-			end
 			it { expect{MeasurementItem.find(:all)}.not_to raise_error }
 		end
 		describe ".find_by_nickname" do
@@ -23,13 +25,16 @@ module MedusaRestClient
 			let(:nickname){ 'Be-deleteme' }
 			before do
 				nickname
-				p subject
 			end
 			it { expect(subject.nickname).to eql(nickname) }
 			after do
 				subject.destroy
 			end
 		end
+		after do
+			FakeWeb.allow_net_connect = false
+		end
+		
 	end
 
 end
