@@ -1,5 +1,10 @@
 module MedusaRestClient
 	class Base < ActiveResource::Base
+		self.site = MedusaRestClient.site
+		self.prefix = MedusaRestClient.prefix
+		self.user = MedusaRestClient.user
+		self.password = MedusaRestClient.password
+		
 		@@pref_path = nil
 		@@default_config = {'uri' => 'database.misasa.okayama-u.ac.jp/stone/', 'user' => 'admin', 'password' => 'password'}
 		@@config = nil
