@@ -5,6 +5,43 @@ module MedusaRestClient
 		before do
 			setup
 		end
+		describe ".find_or_create_by_file", :current => true do
+			let(:obj){ AttachmentFile.find_or_create_by_file(upload_file) }
+			let(:upload_file){ 'tmp/test_image.jpg' }
+			let(:upload_file_md5){ Digest::MD5.hexdigest(File.open(upload_file, 'rb').read) }
+			let(:md5){ }
+			before do
+				FakeWeb.allow_net_connect = true
+				setup_empty_dir('tmp')
+				setup_file(upload_file)
+				obj
+			end
+			it { expect(obj.md5hash).to be_eql(upload_file_md5) }
+			after do
+				#obj.destroy
+				FakeWeb.allow_net_connect = false
+			end
+		end
+
+		describe ".find_by_file", :current => false do
+			let(:obj){ AttachmentFile.create(:file => upload_file, :description => 'test upload hello world') }
+			let(:upload_file){ 'tmp/Desert.jpg' }
+			let(:upload_file_md5){ Digest::MD5.hexdigest(File.open(upload_file, 'rb').read) }
+			let(:md5){ }
+			before do
+				FakeWeb.allow_net_connect = true
+				setup_empty_dir('tmp')
+				setup_file(upload_file)
+				obj
+			end
+			it { expect(obj.md5hash).to be_eql(upload_file_md5) }
+			it { expect(AttachmentFile.find_by_file(upload_file).md5hash).to eql(upload_file_md5)}
+			after do
+				obj.destroy
+				FakeWeb.allow_net_connect = false
+			end
+		end
+
 		describe ".save with new object" do
 			let(:obj){ FactoryGirl.build(:attachment_file) }
 			before do
@@ -50,7 +87,7 @@ module MedusaRestClient
 	    	it { expect(AttachmentFile.get_content_type_from_extname(extname)).to eq('text/plain') }
 	    end
 
-		describe ".upload", :current => true do
+		describe ".upload" do
 			let(:upload_file){ 'tmp/upload.txt' }
 			before do
 				setup_empty_dir('tmp')

@@ -10,8 +10,12 @@ module MedusaRestClient
 #		@collection_path = "#{resource.class.prefix}#{@collection_name}#{subclass.format_extension}"
   	end
 
+    def collection_path(obj)
+      "#{@resource.class.prefix}#{@resource.class.collection_name}/#{@resource.id}/#{obj.class.collection_name}#{obj.class.format_extension}"      
+    end
+
   	def element_path(obj)
-		"#{@resource.class.prefix}#{@resource.class.collection_name}/#{@resource.id}/#{obj.class.collection_name}/#{obj.id}#{obj.class.format_extension}"
+		  "#{@resource.class.prefix}#{@resource.class.collection_name}/#{@resource.id}/#{obj.class.collection_name}/#{obj.id}#{obj.class.format_extension}"
   	end
 
   #  	def collection_path(subclass)
@@ -19,8 +23,12 @@ module MedusaRestClient
   # 	end
 
   	def <<(obj)
-      Base.connection.put(element_path(obj), obj.encode, obj.class.headers).tap do |response|
-        #load_attributes_from_response(response)
+      if obj.new?
+        Base.connection.post(collection_path(obj), obj.encode, obj.class.headers)
+      else
+        Base.connection.put(element_path(obj), obj.encode, obj.class.headers).tap do |response|
+          #load_attributes_from_response(response)
+        end
       end
   	end
 

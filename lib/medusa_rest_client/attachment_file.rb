@@ -1,11 +1,30 @@
 module MedusaRestClient
 	class AttachmentFile < Base
 
+		def self.find_by_file(filepath)
+			md5hash = Digest::MD5.hexdigest(File.open(filepath, 'rb').read)
+			self.find(:first, :params => {:q => {:md5hash_eq => md5hash}} )
+		end
+		def self.find_or_create_by_file(filepath)
+			mi = self.find_by_file(filepath)
+			return mi if mi
+			mi = self.new(:file => file)
+			mi.save
+			mi
+		end
+
+
 		def self.upload(filepath, opts = {})
 			raise "#{filepath} does not exist" unless File.exists?(filepath)
 			obj = AttachmentFile.create(opts.merge(:file => filepath))
 			obj
 		end
+
+	    # def self.find_by_localfile(mylocalfile)
+	    #   md5hash = Digest::MD5.hexdigest(File.open(mylocalfile, 'rb').read)
+	    #   existings = Attachment.find(:all, :params => {:md5hash => md5hash})
+	    # end
+
 
 	    def save
 	      if new?

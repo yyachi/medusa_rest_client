@@ -17,10 +17,10 @@ module MedusaRestClient
 
 			context "#<<" do
 				before do
-					FakeWeb.register_uri(:put, %r|#{association.element_path(stone_1)}|, :body => nil, :status => ["201", ""])												
+					FakeWeb.register_uri(:post, %r|#{association.collection_path(stone_1)}|, :body => nil, :status => ["201", ""])												
 					association << stone_1
 				end
-				it { expect(FakeWeb).to have_requested(:put, %r|#{association.element_path(stone_1)}|) }
+				it { expect(FakeWeb).to have_requested(:post, %r|#{association.collection_path(stone_1)}|) }
 			end
 
 			context "#.to_a" do
@@ -60,10 +60,10 @@ module MedusaRestClient
 
 			context "#<<" do
 				before do
-					FakeWeb.register_uri(:put, %r|#{association.element_path(stone_1)}|, :body => nil, :status => ["201", ""])												
+					FakeWeb.register_uri(:post, %r|#{association.collection_path(stone_1)}|, :body => nil, :status => ["201", ""])												
 					association << stone_1
 				end
-				it { expect(FakeWeb).to have_requested(:put, %r|#{association.element_path(stone_1)}|) }
+				it { expect(FakeWeb).to have_requested(:post, %r|#{association.collection_path(stone_1)}|) }
 			end
 
 

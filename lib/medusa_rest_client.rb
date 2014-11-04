@@ -98,6 +98,7 @@ require 'medusa_rest_client/measurement_category'
 require 'medusa_rest_client/unit'
 require 'medusa_rest_client/technique'
 require 'medusa_rest_client/author'
+require 'medusa_rest_client/spot'
 
 
 module ActiveResource # :nodoc:

@@ -122,6 +122,14 @@ module MedusaRestClient
 
 			path = attributes.delete('file')
 			data = []
+			attributes.each do |key , value|
+				unless key == 'file'
+				  data << "--#{boundary}"
+				  data << "Content-disposition: form-data; name=\"#{model}[#{key}]\""
+				  data << ""
+				  data << value
+				end
+			end
 
 			if path
 				filename = attributes.delete('filename') || File.basename(path)
@@ -137,17 +145,9 @@ module MedusaRestClient
 				}
 			end
 
-			attributes.each do |key , value|
-				unless key == 'file'
-				  data << "--#{boundary}"
-				  data << "Content-disposition: form-data; name=\"#{model}[#{key}]"
-				  data << ""
-				  data << value
-				end
-			end
-			data << ""
+#			data << ""
 			data << "--#{boundary}--"
-			data << ""
+#			data << ""
 			data.join("\r\n")
 		end
 

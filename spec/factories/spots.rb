@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :spot do
-    association :attachment_file, factory: :attachment_file
+    #association :attachment_file, factory: :attachment_file
     name "画像上点１"
     description "説明１"
     spot_x 1
