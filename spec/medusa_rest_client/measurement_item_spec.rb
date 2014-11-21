@@ -1,4 +1,6 @@
 require 'medusa_rest_client'
+require 'spec_helper'
+
 module MedusaRestClient
 	describe MeasurementItem do
 		before do
@@ -11,12 +13,21 @@ module MedusaRestClient
 		describe ".find_by_nickname" do
 #			subject { MeasurementItem.find(:first, :params => {:q => {:nickname_eq => nickname}} ) }
 			subject { MeasurementItem.find_by_nickname(nickname) }
-
-			let(:nickname){ 'Be' }
-			before do
-				nickname
+			context "with item exists" do
+				let(:nickname){ 'Be' }
+				before do
+					nickname
+				end
+				it { expect(subject.nickname).to eql(nickname) }
 			end
-			it { expect(subject.nickname).to eql(nickname) }
+			context "with item does not exist" do
+				let(:nickname){ 'UNK' }
+				before do
+					nickname
+				end
+				it { expect(subject).to be_nil }
+			end
+
 		end
 
 		describe ".find_or_create_by_nickname" do

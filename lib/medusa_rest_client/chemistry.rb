@@ -10,5 +10,13 @@ module MedusaRestClient
 		def analysis=(analysis)
 			self.prefix_options[:analysis_id] = analysis.id
 		end
+		def unit=(unit)
+			return unless unit
+			self.unit_id = unit.id
+		end
+		def unit
+			return unless self.unit_id
+			Unit.find(self.unit_id)
+		end
 	end
 end

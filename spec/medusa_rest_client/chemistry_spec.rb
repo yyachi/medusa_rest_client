@@ -48,6 +48,32 @@ module MedusaRestClient
 			end
 		end
 
+		describe ".unit=", :current => true do
+			let(:chem_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.155) }
+			let(:unit){ Unit.find_by_name('centi_gram_per_gram') }
+
+			before do
+				chem_1.unit = unit
+			end
+			it { expect(chem_1.unit_id).to be_eql(unit.id)}
+		end
+
+		describe "#unit", :current => true do
+			let(:chem_1){ Chemistry.create(chem_attrib) }			
+			let(:chem_attrib){ {:analysis_id => analysis.id, :measurement_item_id => 198, :value => 0.155, :unit_id => unit.id} }
+			let(:analysis){ Analysis.create(:name => 'deleteme')}
+			let(:unit){ Unit.find_by_name('centi_gram_per_gram') }
+			before do
+				unit
+				analysis
+				chem_1
+			end
+			it { expect(chem_1.unit).to be_eql(unit) }
+			after do
+				analysis.destroy
+			end
+		end
+
 		describe "analysis.create_chemistry" do
 			let(:analysis){ Analysis.create(:name => 'deleteme')}
 			let(:attrib){ {:measurement_item_id => 198, :value => 0.155} }
