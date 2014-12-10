@@ -162,7 +162,7 @@ module MedusaRestClient
 			before do
 				setup
 			end
-			context "with global_id" do
+			context "with global_id", :current => true do
 				subject{ Record.find(arg) }
 				let(:arg){ obj.global_id }
 				let(:obj){ Box.find_by_path('/ISEI/main')}
@@ -176,7 +176,7 @@ module MedusaRestClient
 				end
 			end
 
-			context "with invalid global_id" do
+			context "with invalid global_id", :current => true do
 				subject{ Record.find(arg) }
 				let(:arg){ '000-000' }
 				before do

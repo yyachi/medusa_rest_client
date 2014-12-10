@@ -3,13 +3,13 @@ module MedusaRestClient
 
 	describe Chemistry do
 		before do
-			FakeWeb.allow_net_connect = true
+#			FakeWeb.allow_net_connect = true
 			#FakeWeb.clean_registry
  			ActiveResource::Base.logger = Logger.new(STDOUT)
   			ActiveResource::Base.logger.level = Logger::DEBUG
 		end
 
-		describe ".find_all", :current => true do
+		describe ".find_all" do
 			let(:analysis){ Analysis.find(2530) }			
 			before do
 			#	FakeWeb.allow_net_connect = true
@@ -20,7 +20,7 @@ module MedusaRestClient
 			#	FakeWeb.allow_net_connect = false
 			end			
 		end
-		describe "analysis.chemistries", :current => false do
+		describe "analysis.chemistries" do
 			let(:analysis){ Analysis.find(2530) }
 			before do
 				analysis
@@ -34,21 +34,35 @@ module MedusaRestClient
 			end
 		end
 
-		describe ".create" do
-			let(:analysis){ Analysis.create(:name => 'deleteme')}
-			let(:chemistry_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.123) }
+		describe ".create", :current => true do
+			#let(:analysis){ Analysis.create(:name => 'deleteme')}
+			let(:analysis){ double('analysis', :id => 110, :name => 'test').as_null_object }
 			before do
-				analysis
-				chemistry_1.analysis = analysis
+				FakeWeb.register_uri(:post, %r|/analyses/110/chemistries.json|, :body => {:id => 1, :name => "hello"}.to_json, :status => ["201", "Created"])								
 			end
-			it { expect(analysis).not_to be_nil }
-			it { expect{chemistry_1.save}.not_to raise_error}
-			after do
-				analysis.destroy
+			context "with analysis" do
+				let(:chemistry_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.123	) }
+				before do
+					chemistry_1.analysis = analysis
+				end
+				#it { expect(analysis).not_to be_nil }
+				it { 
+					#expect(FakeWeb).to have_requested(:post, %r|/analyses/110/chemistries.json|)
+					expect{ chemistry_1.save }.not_to raise_error
+				}
 			end
+
+			context "with analysis_id" do
+				let(:chemistry_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.123, :analysis_id => analysis.id ) }
+				it { 
+					#expect(FakeWeb).to have_requested(:post, %r|/analyses/110/chemistries.json|)
+					expect{ chemistry_1.save }.not_to raise_error
+				}
+			end
+
 		end
 
-		describe ".unit=", :current => true do
+		describe ".unit=" do
 			let(:chem_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.155) }
 			let(:unit){ Unit.find_by_name('centi_gram_per_gram') }
 
@@ -58,7 +72,7 @@ module MedusaRestClient
 			it { expect(chem_1.unit_id).to be_eql(unit.id)}
 		end
 
-		describe "#unit", :current => true do
+		describe "#unit" do
 			let(:chem_1){ Chemistry.create(chem_attrib) }			
 			let(:chem_attrib){ {:analysis_id => analysis.id, :measurement_item_id => 198, :value => 0.155, :unit_id => unit.id} }
 			let(:analysis){ Analysis.create(:name => 'deleteme')}
@@ -88,7 +102,7 @@ module MedusaRestClient
 
 		end
 		after do
-			FakeWeb.allow_net_connect = false
+#			FakeWeb.allow_net_connect = false
 		end
 
 	end

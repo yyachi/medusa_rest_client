@@ -5,6 +5,7 @@ module MedusaRestClient
 		before do
 			setup
 		end
+
 		describe ".find_or_create_by_file", :current => true do
 			let(:obj){ AttachmentFile.find_or_create_by_file(upload_file) }
 			let(:upload_file){ 'tmp/test_image.jpg' }
@@ -97,5 +98,36 @@ module MedusaRestClient
 			end
 			it { expect(FakeWeb).to have_requested(:post, %r|/attachment_files.json|) }
 		end
+
+		describe "#length", :current => true do
+			subject{ obj.length }
+			let(:obj){ AttachmentFile.new(:original_geometry => "#{width}x#{height}")}
+			let(:width){ 1947 }
+			let(:height){ 1537 }
+			it {
+				expect(subject).to be_eql(width)
+			}
+		end
+
+		describe "#height", :current => true do
+			subject{ obj.height }
+			let(:obj){ AttachmentFile.new(:original_geometry => "#{width}x#{height}")}
+			let(:width){ 1947 }
+			let(:height){ 1537 }
+			it {
+				expect(subject).to be_eql(height)
+			}
+		end
+
+		describe "#width", :current => true do
+			subject{ obj.width }
+			let(:obj){ AttachmentFile.new(:original_geometry => "#{width}x#{height}")}
+			let(:width){ 1947 }
+			let(:height){ 1537 }
+			it {
+				expect(subject).to be_eql(width)
+			}
+		end
+
 	end
 end

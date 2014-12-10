@@ -23,11 +23,12 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'gli', '~> 2.12'
   spec.add_development_dependency "bundler", "~> 1.5"
   spec.add_development_dependency "rake", "10.1.0"
-  spec.add_development_dependency "rspec", "3.0.0"
+  spec.add_development_dependency "rspec", "~> 3.1.0"
   spec.add_development_dependency "turnip", "1.2.1"
 
   spec.add_development_dependency "factory_girl", "~> 4.4"
   spec.add_development_dependency "fakeweb", "~> 1.3"
   spec.add_development_dependency "fakeweb-matcher", "~> 1.2"
   spec.add_development_dependency "geminabox", "~> 0.12"
+  spec.add_development_dependency "webmock", "~> 1.20.4"  
 end

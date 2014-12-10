@@ -25,6 +25,22 @@ module MedusaRestClient
 	    #   existings = Attachment.find(:all, :params => {:md5hash => md5hash})
 	    # end
 
+	    def length
+	    	return unless width && height
+	    	width >= height ? width : height
+	    end
+
+	    def width
+	    	return unless original_geometry
+	    	original_geometry =~ /(\d+)x/
+	    	$1.to_i if $1
+	    end
+
+	    def height
+	    	return unless original_geometry
+	    	original_geometry =~ /x(\d+)/
+	    	$1.to_i if $1
+	    end
 
 	    def save
 	      if new?
