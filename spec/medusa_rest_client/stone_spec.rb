@@ -116,6 +116,19 @@ module MedusaRestClient
 		# 	end
 		# end
 
+		describe "#bib=", :current => true do
+			subject { stone.bibs = bib }
+			let(:stone){ FactoryGirl.build(:stone, id: 10)}
+			let(:bib){ FactoryGirl.build(:bib, id:100)}
+
+			before do
+				FakeWeb.register_uri(:put, %r|/stones/10/bibs/100.json|, :body => bib.to_json, :status => ["200", "OK"])
+				allow(bib).to receive(:new?).and_return(false)												
+				stone.bibs << bib
+			end
+			it { expect(FakeWeb).to have_requested(:put, %r|/stones/10/bibs/100.json|) }
+		end
+
 		describe "box", :current => false do
 			let(:stone) { Stone.find(stone_id)}
 			let(:stone_id) { 10 }

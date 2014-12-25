@@ -13,8 +13,8 @@ FactoryGirl.define do
     f.key "キー１"
     f.link_url "URL１"
     f.doi "doi１"
-    f.authors {
-      [ FactoryGirl.create(:author, name: "Test_1"), FactoryGirl.create(:author, name: "Test_2") ]
-    }
+    # f.authors {
+    #   [ FactoryGirl.create(:author, name: "Test_1"), FactoryGirl.create(:author, name: "Test_2") ]
+    # }
   end
 end
