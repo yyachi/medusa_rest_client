@@ -161,6 +161,22 @@ module MedusaRestClient
 		end
 
 		#associations
+		def record_property
+			self.get(:record_property)
+		end
+
+		def update_global_id(id)
+			update_record_property(:global_id => id)
+		end
+
+		def update_record_property(record_property)
+			prefix = self.class.prefix
+			collection_name = self.class.collection_name + '/' + self.id.to_s + '/record_property'
+			format_extension = self.class.format_extension
+        	update_path = "#{prefix}#{collection_name}#{format_extension}"
+			connection.put(update_path, record_property.send("to_#{self.class.format.extension}"), self.class.headers)
+		end
+
 		def parent
 			p_id = self.attributes["parent_id"]
 			return unless p_id

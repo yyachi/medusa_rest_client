@@ -81,7 +81,7 @@ def setup
 	MedusaRestClient::Base.site = "http://localhost:3000"
 	MedusaRestClient::Base.prefix = "/"
 	MedusaRestClient::Base.user = "admin"
-	MedusaRestClient::Base.password = "password"
+	MedusaRestClient::Base.password = "ed9HJNQk"
  	MedusaRestClient::Base.logger = Logger.new(STDOUT)
   	MedusaRestClient::Base.logger.level = Logger::DEBUG	
 end

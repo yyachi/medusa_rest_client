@@ -18,7 +18,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_runtime_dependency 'activeresource', '~> 4.0'
+  spec.add_runtime_dependency 'activeresource', '~> 4.0.0'
   spec.add_runtime_dependency 'pry', '~> 0.9'
   spec.add_runtime_dependency 'gli', '~> 2.12'
   spec.add_development_dependency "bundler", "~> 1.5"
@@ -30,5 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "fakeweb", "~> 1.3"
   spec.add_development_dependency "fakeweb-matcher", "~> 1.2"
   spec.add_development_dependency "geminabox", "~> 0.12"
-  spec.add_development_dependency "webmock", "~> 1.20.4"  
+  spec.add_development_dependency "webmock", "~> 1.20.4"
+  spec.add_development_dependency "simplecov-rcov", "~> 0.2.3"
+  spec.add_development_dependency "rspec_junit_formatter", "~> 0.2.0"  
 end

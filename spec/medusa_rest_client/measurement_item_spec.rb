@@ -3,13 +3,7 @@ require 'spec_helper'
 
 module MedusaRestClient
 	describe MeasurementItem do
-		before do
-			FakeWeb.allow_net_connect = true
-		end
 
-		describe ".find" do
-			it { expect{MeasurementItem.find(:all)}.not_to raise_error }
-		end
 		describe ".find_by_nickname" do
 #			subject { MeasurementItem.find(:first, :params => {:q => {:nickname_eq => nickname}} ) }
 			subject { MeasurementItem.find_by_nickname(nickname) }
@@ -18,14 +12,10 @@ module MedusaRestClient
 				before do
 					nickname
 				end
-				it { expect(subject.nickname).to eql(nickname) }
-			end
-			context "with item does not exist" do
-				let(:nickname){ 'UNK' }
-				before do
-					nickname
-				end
-				it { expect(subject).to be_nil }
+				it {
+					expect(MeasurementItem).to receive(:find).with(:first, {:params=>{:q=>{:nickname_eq=>"Be"}}}) 
+					subject 
+				}
 			end
 
 		end
@@ -36,14 +26,13 @@ module MedusaRestClient
 			let(:nickname){ 'Be-deleteme' }
 			before do
 				nickname
+				FakeWeb.register_uri(:post, %r|/measurement_items.json|, :body => {:id => 1, :name => "hello"}.to_json, :status => ["201", "Created"])												
 			end
-			it { expect(subject.nickname).to eql(nickname) }
-			after do
-				subject.destroy
-			end
-		end
-		after do
-			FakeWeb.allow_net_connect = false
+			it {  
+				expect(MeasurementItem).to receive(:find).with(:first, {:params=>{:q=>{:nickname_eq=>"Be-deleteme"}}}) 
+				subject
+				expect(FakeWeb).to have_requested(:post, %r|/measurement_items.json|) 				
+			}
 		end
 		
 	end

@@ -23,5 +23,54 @@ module MedusaRestClient
 				it { expect(Base.site_with_userinfo.to_s).to include("#{user}:#{password}") }
 			end			
 		end
+
+		describe "#record_property" do
+			subject { stone.record_property }
+			let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
+
+			let(:record_property_attributes){ {id: prop_id, datum_type: 'Stone', datum_id: stone_id} }			
+			let(:stone_id){ 10 }
+			let(:prop_id){ 1000 }
+
+			before do
+				FakeWeb.register_uri(:get, Regexp.new("stones/#{stone_id}/record_property.json"), :body => record_property_attributes.to_json, :status => ["200", "OK"])
+				stone
+			end
+			it { 
+				expect(subject["id"]).to be_eql(prop_id)
+				expect(FakeWeb).to have_requested(:get, %r|/stones/10/record_property.json|) 
+			}
+		end
+
+		describe "#update_record_property", :current => true do
+			subject { stone.update_record_property(attrib) }
+			let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
+			let(:stone_id){ 10 }
+			let(:attrib){ {global_id:'0000-001', user_id: 10 } }
+			before do
+				stone
+				FakeWeb.register_uri(:put, Regexp.new("stones/#{stone_id}/record_property.json"), :body => attrib.to_json, :status => ["200", "OK"])
+			end
+			it { 
+				subject				
+				expect(FakeWeb).to have_requested(:put, %r|/stones/10/record_property.json|) 
+			}
+		end
+
+		describe "#update_global_id" do
+			subject { stone.update_global_id(new_global_id) }
+			let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
+			let(:stone_id){ 10 }
+			let(:new_global_id){ '0000-001' }
+
+			before do
+				stone
+			end
+			it { 
+				expect(stone).to receive(:update_record_property).with(:global_id => new_global_id)				
+				subject
+			}
+		end
+
 	end
 end

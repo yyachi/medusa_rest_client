@@ -3,35 +3,22 @@ module MedusaRestClient
 
 	describe Chemistry do
 		before do
-#			FakeWeb.allow_net_connect = true
-			#FakeWeb.clean_registry
  			ActiveResource::Base.logger = Logger.new(STDOUT)
   			ActiveResource::Base.logger.level = Logger::DEBUG
 		end
 
-		describe ".find_all" do
-			let(:analysis){ Analysis.find(2530) }			
-			before do
-			#	FakeWeb.allow_net_connect = true
-				analysis
-			end
-			it { expect(Chemistry.find(:all, :params => {:analysis_id => analysis.id})).not_to be_nil }
-			before do
-			#	FakeWeb.allow_net_connect = false
-			end			
-		end
-		describe "analysis.chemistries" do
-			let(:analysis){ Analysis.find(2530) }
+		describe "analysis.chemistries", :current => true do
+			subject{ analysis.chemistries }
+			let(:analysis){ FactoryGirl.remote(:analysis, id: 2530) }
 			before do
 				analysis
-				analysis.chemistries.each do |chem|
-					p chem
-				end
+				FakeWeb.register_uri(:get, %r|/analyses/#{analysis.id}/chemistries.json|, :body => [].to_json, :status => ["200", ""])																
 			end
 
-			it { expect{analysis.chemistries}.not_to raise_error }
-			after do
-			end
+			it { 
+				subject
+				expect(FakeWeb).to have_requested(:get, %r|/analyses/#{analysis.id}/chemistries.json|) 				
+			}
 		end
 
 		describe ".create", :current => true do
@@ -64,7 +51,7 @@ module MedusaRestClient
 
 		describe ".unit=" do
 			let(:chem_1){ Chemistry.new(:measurement_item_id => 198, :value => 0.155) }
-			let(:unit){ Unit.find_by_name('centi_gram_per_gram') }
+			let(:unit){ double("unit", :id => 1 )}
 
 			before do
 				chem_1.unit = unit
@@ -72,35 +59,38 @@ module MedusaRestClient
 			it { expect(chem_1.unit_id).to be_eql(unit.id)}
 		end
 
-		describe "#unit" do
-			let(:chem_1){ Chemistry.create(chem_attrib) }			
-			let(:chem_attrib){ {:analysis_id => analysis.id, :measurement_item_id => 198, :value => 0.155, :unit_id => unit.id} }
-			let(:analysis){ Analysis.create(:name => 'deleteme')}
-			let(:unit){ Unit.find_by_name('centi_gram_per_gram') }
-			before do
-				unit
-				analysis
-				chem_1
-			end
-			it { expect(chem_1.unit).to be_eql(unit) }
-			after do
-				analysis.destroy
-			end
-		end
+		# describe "#unit" do
+		# 	let(:chem_1){ FactoryGirl.remote(:chemistry, id: object_id) }
+		# 	let(:object_id){ 10 }			
+		# 	#let(:chem_attrib){ {:analysis_id => analysis.id, :measurement_item_id => 198, :value => 0.155, :unit_id => unit.id} }
+		# 	let(:analysis){ double(:analysis)}
+		# 	let(:unit){ double(:unit) }
+		# 	before do
+		# 		unit
+		# 		analysis
+		# 		chem_1
+		# 		FakeWeb.register_uri(:get, %r|/analyses/#{analysis.id}/chemistries.json|, :body => [].to_json, :status => ["200", ""])																
 
-		describe "analysis.create_chemistry" do
-			let(:analysis){ Analysis.create(:name => 'deleteme')}
-			let(:attrib){ {:measurement_item_id => 198, :value => 0.155} }
-			before do
-				analysis
-			end
-			it { expect{analysis.create_chemistry(attrib)}.not_to raise_error}
-			after do
-				analysis.destroy
-			end
+		# 	end
+		# 	it { expect(chem_1.unit).to be_eql(unit) }
+		# 	after do
+		# 		analysis.destroy
+		# 	end
+		# end
+
+		# describe "analysis.create_chemistry" do
+		# 	let(:analysis){ Analysis.create(:name => 'deleteme')}
+		# 	let(:attrib){ {:measurement_item_id => 198, :value => 0.155} }
+		# 	before do
+		# 		analysis
+		# 	end
+		# 	it { expect{analysis.create_chemistry(attrib)}.not_to raise_error}
+		# 	after do
+		# 		analysis.destroy
+		# 	end
 
 
-		end
+		# end
 		after do
 #			FakeWeb.allow_net_connect = false
 		end
