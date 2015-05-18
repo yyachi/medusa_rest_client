@@ -2,6 +2,11 @@ require 'medusa_rest_client'
 require 'factory_girl'
 require 'fakeweb'
 require 'fakeweb_matcher'
+require 'simplecov'
+require 'simplecov-rcov'
+SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+SimpleCov.start
+
 
 module FactoryGirl
  	class RemoteStrategy
