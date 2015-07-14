@@ -1,6 +1,6 @@
 # MedusaRestClient
 
-REST client for accessing Medusa Web API
+Provide REST client for accessing Medusa Web API
 
 ## Installation
 
@@ -20,3 +20,11 @@ Or install it yourself as:
 
 ## Usage
 > medusa console
+
+## Contributing
+
+1. Fork it ( https://github.com/[my-github-username]/medusa_rest_client/fork )
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create a new Pull Request
