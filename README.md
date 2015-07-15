@@ -1,6 +1,6 @@
 # MedusaRestClient
 
-Provide REST client for accessing Medusa Web API
+Provide Ruby API via gem that interacts with Medusa by REST
 
 ## Installation
 
@@ -18,8 +18,24 @@ Or install it yourself as:
     $ gem sources -a http://devel.misasa.okayama-u.ac.jp/gems/
     $ gem install medusa_rest_client
 
+## Commands
+
+No command is installed by this gem but one for debug.
+
+Commands are summarized as:
+
+| command   | description                                       | note  |
+|-----------|---------------------------------------------------|-------|
+| medusa    | Provide debug console for interaction with Medusa |       |
+
+
 ## Usage
-> medusa console
+
+See specfile how to call Ruby API.
+
+Or see online document:
+
+    $ medusa --help
 
 ## Contributing
 
