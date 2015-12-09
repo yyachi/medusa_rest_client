@@ -43,12 +43,12 @@ module MedusaRestClient
 
  	def subclasses
  		{
- 			MedusaRestClient::Stone => [Stone, Analysis, AttachmentFile, Bib],
- 			MedusaRestClient::Box => [Box, Stone, AttachmentFile, Bib],
- 			MedusaRestClient::Place => [Stone, AttachmentFile, Bib],
+ 			MedusaRestClient::Specimen => [Specimen, Analysis, AttachmentFile, Bib],
+ 			MedusaRestClient::Box => [Box, Specimen, AttachmentFile, Bib],
+ 			MedusaRestClient::Place => [Specimen, AttachmentFile, Bib],
  			MedusaRestClient::Analysis => [AttachmentFile, Bib],
- 			MedusaRestClient::AttachmentFile => [Box, Stone, Place, Analysis, Bib],
- 			MedusaRestClient::Bib => [Box, Stone, Place, Analysis, AttachmentFile],						
+ 			MedusaRestClient::AttachmentFile => [Box, Specimen, Place, Analysis, Bib],
+ 			MedusaRestClient::Bib => [Box, Specimen, Place, Analysis, AttachmentFile],						
  		}
  	end
 

@@ -36,9 +36,13 @@ module MedusaRestClient
         	obj.kind_of?(Box)
         end
 
-       def self.stone?(id_or_path)
+        def self.specimen?(id_or_path)
         	obj = find_by_id_or_path(id_or_path)
-        	obj.kind_of?(Stone)
+        	obj.kind_of?(Specimen)
+        end
+
+        def self.stone?(id_or_path)
+            self.specimen?(id_or_path)
         end
 
         def self.find_by_id_or_path(id_or_path)
@@ -51,7 +55,7 @@ module MedusaRestClient
 	    	obj = Box.find_by_path(path)
 	    rescue RuntimeError
 	    	begin
-	    	obj = Stone.find_by_path(path)
+	    	obj = Specimen.find_by_path(path)
 	    	rescue RuntimeError => ex
 	    		raise RuntimeError.new("#{path}: No such record")
 	    	end

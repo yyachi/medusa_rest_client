@@ -18,7 +18,7 @@ module MedusaRestClient
 
 			it { 
 				expect(BoxRoot).to receive(:boxes).and_return([])
-				expect(BoxRoot).to receive(:stones).and_return([])				
+				expect(BoxRoot).to receive(:specimens).and_return([])				
 				subject
 			}
 

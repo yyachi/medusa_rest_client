@@ -25,13 +25,13 @@ module MedusaRestClient
 
 			context "#.to_a" do
 				before do
-					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => [stone_1].to_json, :status => ["200", ""])												
+					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/specimens.json|, :body => [stone_1].to_json, :status => ["200", ""])												
 					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/boxes.json|, :body => [box_1, box_2].to_json, :status => ["200", ""])												
 					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/attachment_files.json|, :body => [].to_json, :status => ["200", ""])												
 					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/bibs.json|, :body => [].to_json, :status => ["200", ""])												
 					association.to_a
 				end
-				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/stones.json|) }				
+				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/specimens.json|) }				
 				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/boxes.json|) }				
 				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/attachment_files.json|) }				
 				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/bibs.json|) }				
@@ -40,7 +40,7 @@ module MedusaRestClient
 		end
 
 		describe "with subclass" do
-			let(:association){ MyAssociation.new(obj, Stone) }
+			let(:association){ MyAssociation.new(obj, Specimen) }
 			let(:obj) { Box.find(obj_id)}
 			let(:obj_id) { 10 }
 			let(:stones) { [stone_1] }
@@ -55,7 +55,7 @@ module MedusaRestClient
 				before do
 					association.to_a
 				end
-				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/stones.json|) }
+				it { expect(FakeWeb).to have_requested(:get, %r|boxes/#{obj.id}/specimens.json|) }
 			end
 
 			context "#<<" do
@@ -88,7 +88,7 @@ module MedusaRestClient
 
 			context "#.empty?", :current => true do
 				before do
-					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/stones.json|, :body => [].to_json, :status => ["200", ""])										
+					FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/specimens.json|, :body => [].to_json, :status => ["200", ""])										
 					association
 				end
 				it {

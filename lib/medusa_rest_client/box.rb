@@ -135,7 +135,7 @@ module MedusaRestClient
 			@entries = [] unless @entries
 			if @entries.empty?
 				@entries = @entries.concat(boxes.to_a)
-				@entries = @entries.concat(stones.to_a)
+				@entries = @entries.concat(specimens.to_a)
 			end
 			return @entries.sort{|a,b| a.name <=> b.name }
 		end

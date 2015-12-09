@@ -8,4 +8,8 @@ module MedusaRestClient
 		after do
 		end
 	end
+
+	describe "specimen" do
+		it { expect("specimen".pluralize).to eql("specimens")}
+	end
 end

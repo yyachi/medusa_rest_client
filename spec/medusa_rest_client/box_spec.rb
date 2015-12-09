@@ -280,7 +280,7 @@ module MedusaRestClient
 			let(:obj_id) { 10 }
 			before do
 				FactoryGirl.remote(:box, id: obj_id)
-				FakeWeb.register_uri(:post, %r|/boxes/#{obj.id}/stones.json|, :body => nil, :status => ["201", ""])												
+				FakeWeb.register_uri(:post, %r|/boxes/#{obj.id}/specimens.json|, :body => nil, :status => ["201", ""])												
 				obj.relatives << stone_1
 			end
 			it { expect(nil).to be_nil }
@@ -292,7 +292,7 @@ module MedusaRestClient
 			let(:obj_id) { 10 }
 			before do
 				FactoryGirl.remote(:box, id: obj_id)
-				FakeWeb.register_uri(:post, %r|/boxes/#{obj.id}/stones.json|, :body => nil, :status => ["201", ""])												
+				FakeWeb.register_uri(:post, %r|/boxes/#{obj.id}/specimens.json|, :body => nil, :status => ["201", ""])												
 				obj.stones << stone_1
 			end
 			it { expect(nil).to be_nil }

@@ -81,6 +81,7 @@ require 'medusa_rest_client/version'
 require 'medusa_rest_client/my_association'
 require 'medusa_rest_client/base'
 require 'medusa_rest_client/record'
+require 'medusa_rest_client/specimen'
 require 'medusa_rest_client/stone'
 require 'medusa_rest_client/box'
 require 'medusa_rest_client/box_root'
@@ -99,6 +100,12 @@ require 'medusa_rest_client/unit'
 require 'medusa_rest_client/technique'
 require 'medusa_rest_client/author'
 require 'medusa_rest_client/spot'
+
+module ActiveSupport
+  Inflector.inflections do |inflect|
+    inflect.irregular "specimen", "specimens"
+  end
+end
 
 
 module ActiveResource # :nodoc:

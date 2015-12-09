@@ -190,9 +190,15 @@ module MedusaRestClient
 		end
 
 		def stone
-			p_id = self.attributes["stone_id"]
+			p_id = self.attributes["specimen_id"]
 			return unless p_id
-			Stone.find(p_id)
+			Specimen.find(p_id)
+		end
+
+		def specimen
+			p_id = self.attributes["specimen_id"]
+			return unless p_id
+			Specimen.find(p_id)
 		end
 
 		def place
@@ -216,7 +222,11 @@ module MedusaRestClient
 		end
 
 		def stones
-			MyAssociation.new(self, Stone)
+			MyAssociation.new(self, Specimen)
+		end
+
+		def specimens
+			MyAssociation.new(self, Specimen)
 		end
 
 		def attachment_files

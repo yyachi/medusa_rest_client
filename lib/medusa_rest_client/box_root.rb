@@ -8,7 +8,7 @@ module MedusaRestClient
  		@entries = [] unless @entries
 		if @entries.empty?
 			@entries = @entries.concat(boxes.to_a)
-			@entries = @entries.concat(stones.to_a)
+			@entries = @entries.concat(specimens.to_a)
 		end
 #		return @entries	
 		return @entries.sort{|a,b| a.name <=> b.name }
@@ -28,12 +28,12 @@ module MedusaRestClient
 		Box.on_root
 	end
 
-	def self.stones
+	def self.specimens
 		query = {}
 	 	query[:box_id_blank] = true
 		params = {:q => query}
 		elements = []
-		collection = Stone.find(:all, :params => params)
+		collection = Specimen.find(:all, :params => params)
 		unless collection.elements.empty?
 			next_collection = collection.dup
 		 	while true
@@ -43,6 +43,10 @@ module MedusaRestClient
 		 	end
 		end
 		collection
+	end
+
+	def self.stones
+		self.specimens
 	end
 
   end

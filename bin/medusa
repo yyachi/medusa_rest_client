@@ -43,7 +43,7 @@ global = OptionParser.new do |opts|
 	opts.separator ""
 	opts.separator "Commands:"
 	opts.separator "	medusa console"
-	opts.separator "	medusa console -e'p Stone.find(:first)'"	
+	opts.separator "	medusa console -e'p Specimen.find(:first)'"	
 	opts.separator "	medusa upload <file>"
 	opts.separator ""	
 	opts.separator "Examples:"

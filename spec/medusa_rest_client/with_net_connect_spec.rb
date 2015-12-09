@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	@allow_net_connect = false
+	@allow_net_connect = true
 	if @allow_net_connect
-	describe Stone do
+	describe Specimen do
 		before do
 			setup
 			FakeWeb.clean_registry
@@ -11,7 +11,7 @@ module MedusaRestClient
 		end
 
 		describe "#upload_file to real server" do
-			let(:stone){ Stone.create(:name => 'sample-1')}
+			let(:stone){ Specimen.create(:name => 'sample-1')}
 			let(:upload_file){ 'tmp/Desert.jpg'}
 			let(:filename){'example.jpg'}
 			before do
@@ -30,7 +30,7 @@ module MedusaRestClient
 
 		describe "record_property" do
 			subject { stone.record_property }
-			let(:stone){ Stone.create(:name => 'test-stone') }
+			let(:stone){ Specimen.create(:name => 'test-stone') }
 			before do
 				stone
 			end
@@ -42,7 +42,7 @@ module MedusaRestClient
 
 		describe "update_global_id" do
 			subject { stone.update_global_id(new_global_id) }
-			let(:stone){ Stone.create(:name => 'test-stone') }
+			let(:stone){ Specimen.create(:name => 'test-stone') }
 			let(:new_global_id){ '0000-001' }
 			before do
 				stone

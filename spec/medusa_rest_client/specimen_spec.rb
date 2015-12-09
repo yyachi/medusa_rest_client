@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	describe Stone do
+	describe Specimen do
 		before do
 			setup
 			FakeWeb.clean_registry
@@ -11,53 +11,50 @@ module MedusaRestClient
 
 		describe "find_by_path" do
 			context "with absolute path" do
-				subject{ Stone.find_by_path(path) }
+				subject{ Specimen.find_by_path(path) }
 				let(:path){ '/ISEI/main/clean-lab/Allende' }
-				let(:stone){ double(:stone) }
+				let(:specimen){ double(:specimen) }
 				let(:box){ double(:box, :id => box_id).as_null_object }
 				let(:box_id){ 10 }
 				before do
 					allow(Box).to receive(:find_by_path).and_return(box)
-					allow(Stone).to receive(:find).and_return(stone)
+					allow(Specimen).to receive(:find).and_return(specimen)
 				end
 				it {
 					expect(Box).to receive(:find_by_path).with(File.dirname(path)).and_return(box)
-					expect(Stone).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_eq => box_id}}).and_return(stone)
+					expect(Specimen).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_eq => box_id}}).and_return(specimen)
 					subject
 				}
 			end
 
 			context "with root path", :current => true do
-				subject{ Stone.find_by_path(path) }
+				subject{ Specimen.find_by_path(path) }
 				let(:path){ '/deleteme-1' }
-				let(:stone){ double(:stone) }
-				before do
-					#@stone = Stone.find_by_path(path)
-				end
+				let(:specimen){ double(:specimen) }
 				it {
-					expect(Stone).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_blank => true}}).and_return(stone)
+					expect(Specimen).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_blank => true}}).and_return(specimen)
 					subject
 				}
 			end
 
 			context "with relative path on root" do
-				subject{ Stone.find_by_path(path) }
+				subject{ Specimen.find_by_path(path) }
 				let(:path){ 'deleteme-1' }
-				let(:stone){ double(:stone) }
+				let(:specimen){ double(:specimen) }
 				before do
 					Box.chdir("/")
 				end
 				it { 
-					expect(Stone).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_blank => true}}).and_return(stone)
+					expect(Specimen).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_blank => true}}).and_return(specimen)
 					subject
 				}
 			end
 
 			context "with relative path on /ISEI/main/clean-lab" do
-				subject{ Stone.find_by_path(path) }
+				subject{ Specimen.find_by_path(path) }
 				let(:pwd) {'/ISEI/main/clean-lab'}
 				let(:path){ 'Allende' }
-				let(:stone){ double(:stone) }
+				let(:specimen){ double(:specimen) }
 				let(:box){ double(:box, id: box_id ) }
 				let(:box_id){ 100 }
 				before do
@@ -65,22 +62,22 @@ module MedusaRestClient
 					allow(Box).to receive(:find_by_path).with(pwd).and_return(box)
 				end
 				it {
-					expect(Stone).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_eq => box_id}}).and_return(stone)
+					expect(Specimen).to receive(:find).with(:first, :params => {:q => {:name_eq => File.basename(path), :m => 'and', :box_id_eq => box_id}}).and_return(specimen)
 					subject 
 				}
 			end
 
 			context "with relative invalid path on /ISEI/main/clean-lab" do
-				subject{ Stone.find_by_path(path) }
+				subject{ Specimen.find_by_path(path) }
 				let(:pwd) {'/ISEI/main/clean-lab'}
 				let(:path){ 'Alle' }
 				let(:box){ double(:box, id: box_id ) }
 				let(:box_id){ 100 }
-				let(:stone){ double(:stone) }
+				let(:specimen){ double(:specimen) }
 				before do
 					allow(Box).to receive(:pwd).and_return(pwd)
 					allow(Box).to receive(:find_by_path).with(pwd).and_return(box)
-					allow(Stone).to receive(:find)
+					allow(Specimen).to receive(:find)
 				end
 				it { 
 
@@ -92,11 +89,11 @@ module MedusaRestClient
 
 		describe "box" do
 			subject{ stone.box }
-			let(:stone) { Stone.find(stone_id)}
-			let(:stone_id) { 10 }
+			let(:stone) { Specimen.find(specimen_id)}
+			let(:specimen_id) { 10 }
 			let(:box_id){ 100 }
 			before do
-				FactoryGirl.remote(:stone, id: stone_id, box_id: box_id)
+				FactoryGirl.remote(:specimen, id: specimen_id, box_id: box_id)
 			end
 			it { 
 				expect(Box).to receive(:find).with(box_id)
