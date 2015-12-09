@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	@allow_net_connect = true
+	@allow_net_connect = false
 	if @allow_net_connect
 	describe Specimen do
 		before do
