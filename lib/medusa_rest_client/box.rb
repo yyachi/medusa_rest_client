@@ -140,6 +140,16 @@ module MedusaRestClient
 			return @entries.sort{|a,b| a.name <=> b.name }
 		end
 
+	  	def inventory_path(obj)
+			  "#{self.class.prefix}#{self.class.collection_name}/#{self.id}/#{obj.class.collection_name}/#{obj.id}/inventory#{obj.class.format_extension}"
+	  	end
+
+		def inventory(obj)
+	        connection.post(inventory_path(obj), obj.encode, obj.class.headers).tap do |response|
+	          #load_attributes_from_response(response)
+	        end
+		end
+
 		def box
 			parent
 		end

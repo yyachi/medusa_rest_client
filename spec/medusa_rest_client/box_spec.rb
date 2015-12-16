@@ -67,6 +67,34 @@ module MedusaRestClient
 				subject
 			 }
 		end
+
+		describe "inventory", :current => true do
+			subject{ box.inventory item}
+			let(:box){ FactoryGirl.remote(:box, id: box_id) }
+			let(:box_id){ 10 }
+			context "with specimen" do
+				let(:item){ FactoryGirl.remote(:specimen, id: 100) }
+				before do
+					FakeWeb.register_uri(:post, %r|/boxes/#{box.id}/specimens/#{item.id}/inventory.json|, :body => [].to_json, :status => ["200", ""])																
+				end
+				it {
+					subject
+					expect(FakeWeb).to have_requested(:post, %r|/boxes/#{box.id}/specimens/#{item.id}/inventory.json|)
+				}
+			end
+
+			context "with box" do
+				let(:item){ FactoryGirl.remote(:box, id: 200 ) }
+				before do
+					FakeWeb.register_uri(:post, %r|/boxes/#{box.id}/boxes/#{item.id}/inventory.json|, :body => [].to_json, :status => ["200", ""])																
+				end
+				it {
+					subject
+					expect(FakeWeb).to have_requested(:post, %r|/boxes/#{box.id}/boxes/#{item.id}/inventory.json|)
+				}
+			end
+
+		end
 		
 		describe "parent" do
 			subject{ box.parent }

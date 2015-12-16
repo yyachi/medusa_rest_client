@@ -66,7 +66,6 @@ module MedusaRestClient
 				it { expect(FakeWeb).to have_requested(:post, %r|#{association.collection_path(stone_1)}|) }
 			end
 
-
 			context "#inspect" do
 				before do
 					association

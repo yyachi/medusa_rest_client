@@ -3,6 +3,45 @@ require 'spec_helper'
 module MedusaRestClient
 	@allow_net_connect = false
 	if @allow_net_connect
+
+	describe Box do
+		before do
+			setup
+			FakeWeb.clean_registry
+			FakeWeb.allow_net_connect = true
+		end
+
+		describe "inventory", :current => true do
+			let(:box){ Box.create(:name => 'box-for-inventory')}
+
+			subject { box.inventory(item) }
+
+			before do
+				box
+				item
+				subject
+			end
+			context "with specimen" do
+				let(:item){ Specimen.create(:name => 'specimen_1')}
+				it { expect(box.specimens[0]).to be_eql(item) }			
+			end
+
+			context "with box" do
+				let(:item){ Box.create(:name => 'box_1')}
+				it { expect(box.boxes[0]).to be_eql(item) }			
+			end
+
+			after do
+				item.destroy
+				box.destroy
+			end
+		end
+
+		after do
+			FakeWeb.allow_net_connect = false
+		end
+	end
+
 	describe Specimen do
 		before do
 			setup
