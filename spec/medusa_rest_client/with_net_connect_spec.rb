@@ -1,8 +1,43 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	@allow_net_connect = false
+	@allow_net_connect = true
 	if @allow_net_connect
+
+	describe AttachmentFile, :current => true do
+		before do
+			setup
+			FakeWeb.clean_registry
+			FakeWeb.allow_net_connect = true
+		end
+
+		describe "#upload_file to real server" do
+			#let(:stone){ Specimen.create(:name => 'sample-1')}
+			let(:remote_file){ AttachmentFile.find_or_create_by_file(upload_file) }
+			let(:upload_file){ 'tmp/Desert.jpg'}
+			let(:filename){'example.jpg'}
+			before do
+				setup_empty_dir('tmp')
+				setup_file(upload_file)
+				remote_file
+				#file = AttachmentFile.find_by_file(upload_file)
+				#file.destroy
+
+
+			end
+			it { expect(nil).to be_nil }
+
+			after do
+				remote_file.destroy
+				#@file.destroy
+			end				
+		end			
+
+
+		after do
+			FakeWeb.allow_net_connect = false
+		end		
+	end
 
 	describe Box do
 		before do

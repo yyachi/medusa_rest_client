@@ -8,11 +8,10 @@ module MedusaRestClient
 		def self.find_or_create_by_file(filepath)
 			mi = self.find_by_file(filepath)
 			return mi if mi
-			mi = self.new(:file => file)
+			mi = self.new(:file => filepath)
 			mi.save
 			mi
 		end
-
 
 		def self.upload(filepath, opts = {})
 			raise "#{filepath} does not exist" unless File.exists?(filepath)
