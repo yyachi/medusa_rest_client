@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	@allow_net_connect = true
+	@allow_net_connect = false
 	if @allow_net_connect
 
-	describe AttachmentFile, :current => true do
+	describe AttachmentFile do
 		before do
 			setup
 			FakeWeb.clean_registry
