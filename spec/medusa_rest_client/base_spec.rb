@@ -42,6 +42,20 @@ module MedusaRestClient
 			}
 		end
 
+                describe "#lose", :current => true do
+                  subject { stone.lose }
+		  let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
+		  let(:stone_id){ 10 }
+                  before do
+                    stone
+		    FakeWeb.register_uri(:put, Regexp.new("specimens/#{stone_id}/record_property/lose.json"), :body => nil, :status => ["200", "OK"])
+                  end
+                  it {
+                    subject
+		    expect(FakeWeb).to have_requested(:put, %r|/specimens/10/record_property/lose.json|) 
+                  }
+                end
+
 		describe "#update_record_property", :current => true do
 			subject { stone.update_record_property(attrib) }
 			let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
