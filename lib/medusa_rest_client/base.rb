@@ -162,12 +162,20 @@ module MedusaRestClient
 
 		#associations
 		def record_property
-			self.get(:record_property)
+	          self.get(:record_property)
 		end
 
 		def update_global_id(id)
-			update_record_property(:global_id => id)
+		  update_record_property(:global_id => id)
 		end
+
+                def is_lost
+                  record_property["lost"]
+                end
+
+                def is_disposed
+                  record_property["disposed"]
+                end
 
                 def lose
                   change_status('lose')

@@ -42,6 +42,7 @@ module MedusaRestClient
 			}
 		end
 
+
                 describe "#lose", :current => true do
                   subject { stone.lose }
 		  let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
