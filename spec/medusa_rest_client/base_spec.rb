@@ -46,9 +46,10 @@ module MedusaRestClient
                   subject { stone.lose }
 		  let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
 		  let(:stone_id){ 10 }
+                  let(:attrib){ {global_id:'0000-001', user_id: 10 } }
                   before do
                     stone
-		    FakeWeb.register_uri(:put, Regexp.new("specimens/#{stone_id}/record_property/lose.json"), :body => nil, :status => ["200", "OK"])
+		    FakeWeb.register_uri(:put, Regexp.new("specimens/#{stone_id}/record_property/lose.json"), :body => attrib.to_json, :status => ["200", "OK"])
                   end
                   it {
                     subject

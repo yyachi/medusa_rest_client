@@ -170,11 +170,19 @@ module MedusaRestClient
 		end
 
                 def lose
+                  change_status('lose')
+                end
+    
+                def found
+                  change_status('found')
+                end
+
+                def change_status(action)
 		  prefix = self.class.prefix
-		  collection_name = self.class.collection_name + '/' + self.id.to_s + '/record_property/lose'
+		  collection_name = self.class.collection_name + '/' + self.id.to_s + "/record_property/#{action}"
 		  format_extension = self.class.format_extension
         	  update_path = "#{prefix}#{collection_name}#{format_extension}"
-		  connection.put(update_path, nil, self.class.headers)
+		  connection.put(update_path, self.record_property, self.class.headers)
                 end
 
 		def update_record_property(record_property)
