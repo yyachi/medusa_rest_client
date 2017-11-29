@@ -46,7 +46,29 @@ module MedusaRestClient
 			FakeWeb.allow_net_connect = true
 		end
 
-		describe "inventory", :current => true do
+                describe "relatives" do
+                  subject { box.relatives << obj }
+                  let(:box){ Box.create(:name => "box-for-relatives") }
+                  before do
+                    box
+                    obj
+                    subject
+                  end
+                  context "with specimen" do
+                    let(:obj){ Specimen.create(:name => 'specimen_1')}
+                    it { expect(box.specimens[0]).to be_eql(obj) }
+                  end
+                  context "with bib" do
+                    let(:obj){ Bib.create(:name => 'bib_1', :author_ids => [1])}
+                    it { expect(box.bibs[0]).to be_eql(obj)}
+                  end
+                  after do
+                    obj.destroy
+                    box.destroy
+                  end
+                end
+
+		describe "inventory" do
 			let(:box){ Box.create(:name => 'box-for-inventory')}
 
 			subject { box.inventory(item) }
@@ -76,6 +98,38 @@ module MedusaRestClient
 			FakeWeb.allow_net_connect = false
 		end
 	end
+
+        describe Bib do
+	  before do
+	    setup
+	    FakeWeb.clean_registry
+	    FakeWeb.allow_net_connect = true
+	  end
+          describe "relatives" do
+            subject { bib.relatives << obj }
+            let(:bib){ Bib.create(:name => "bib-for-relatives", :author_ids => [1]) }
+            before do
+              bib
+              obj
+              subject
+            end
+            context "with specimen" do
+              let(:obj){ Specimen.create(:name => 'specimen_1')}
+              it { expect(bib.specimens[0]).to be_eql(obj) }
+            end
+            context "with box", :current => true do
+              let(:obj){ Box.create(:name => 'box_1')}
+              it { expect(bib.boxes[0]).to be_eql(obj)}
+            end
+            after do
+              obj.destroy
+              bib.destroy
+            end
+          end
+	  after do
+	    FakeWeb.allow_net_connect = false
+	  end
+        end
 
 	describe Specimen do
 		before do
