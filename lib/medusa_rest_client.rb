@@ -55,7 +55,8 @@ module MedusaRestClient
       else
         uri_string = @default_uri
       end
-      uri_string = "http://" + uri_string unless (/:\/\// =~ uri_string)
+      # uri_string = "http://" + uri_string unless (/:\/\// =~ uri_string)
+      uri_string = "https://" + uri_string unless (/:\/\// =~ uri_string)
       uri_string = uri_string + "/" unless (/\/\z/ =~ uri_string)
       @uri = URI.parse(uri_string)
     end
