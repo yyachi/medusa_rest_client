@@ -2,6 +2,8 @@
 
 Provide Ruby API via gem that interacts with Medusa by REST
 
+# Description
+
 # Installation
 
 Add this line to your application's Gemfile:
