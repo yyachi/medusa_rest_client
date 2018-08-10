@@ -4,7 +4,7 @@ Provide Ruby API via gem that interacts with Medusa by REST
 
 # Description
 
-This gem is a client for interacting with [Medusa][] web service. [Medusa][] provides RESTful [API][api], which is implemented as XML and JSON over HTTP using all four verbs (GET/POST/PUT/DELETE).
+This gem is a client for interacting with [Medusa][]. Medusa provides RESTful [API][api], which is implemented as XML and JSON over HTTP using all four verbs (GET/POST/PUT/DELETE).
 This gem allows Ruby developers to programmatically access the [API][].
 This gem provides some useful functions to manage records on the Medusa programatically.
 
