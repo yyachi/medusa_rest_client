@@ -5,10 +5,13 @@ Provide Ruby API via gem that interacts with Medusa by REST
 # Description
 
 This gem is a client for interacting with [Medusa][] [REST API][api].
+Medusa REST API follows the Rails's RESTful conventions, so using it with [ActiveResource][] is pretty straightforward.
+This gem uses ActiveResource to interact with the Medusa REST API.
 This gem allows Ruby developers to programmatically access the API and provides some useful functions to manage records on the Medusa programatically.
 
 [medusa]: https://github.com/misasa/medusa/        "Medusa"
 [api]: http://dream.misasa.okayama-u.ac.jp/documentation/MedusaRestAPI/ "Medusa Rest API"
+[ActiveResource]: https://github.com/rails/activeresource/ "ActiveResource"
 # Installation
 
 Add this line to your application's Gemfile:
