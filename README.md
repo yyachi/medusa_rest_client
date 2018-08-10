@@ -6,11 +6,10 @@ Provide Ruby API via gem that interacts with Medusa by REST
 
 This gem allows Ruby developers to programmatically access [Medusa][].
 
-The API is implemented as XML and JSON over HTTP using all four verbs (GET/POST/PUT/DELETE).
-Each record has its own URL and is manipulated via API.
+The [Medusa Rest API][] is implemented as XML and JSON over HTTP using all four verbs (GET/POST/PUT/DELETE).
 
 [medusa]: https://github.com/misasa/medusa/        "Medusa"
-
+[api]: http://dream.misasa.okayama-u.ac.jp/documentation/MedusaRestAPI/ "Medusa Rest API"
 # Installation
 
 Add this line to your application's Gemfile:
