@@ -4,6 +4,10 @@ Provide Ruby API via gem that interacts with Medusa by REST
 
 # Description
 
+This gem provides access to the [Medusa][] REST API.
+
+[medusa]: https://github.com/misasa/medusa/        "Medusa"
+
 # Installation
 
 Add this line to your application's Gemfile:
