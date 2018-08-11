@@ -1,12 +1,15 @@
 # medusa_rest_client
 
-Provide Ruby API via gem that interacts with Medusa by REST
+A series of Ruby interfaces to Medusa
 
 # Description
 
-This gem is a client for interacting with [Medusa][] by REST.
-[Medusa REST API][api] follows the Rails's RESTful conventions, so this gem uses [ActiveResource][] to interact with the Medusa REST API.
-This gem allows Ruby developers to programmatically access the API and provides some useful functions to manage records on the Medusa programatically.
+A series of Ruby interfaces to Medusa.  This gem is a client for
+interacting with [Medusa][] by REST.  [Medusa REST API][api] follows
+the Rails's RESTful conventions, so this gem uses [ActiveResource][]
+to interact with the Medusa REST API.  This gem allows Ruby developers
+to programmatically access the API and provides some useful functions
+to manage records on the Medusa programatically.
 
 [medusa]: https://github.com/misasa/medusa/        "Medusa"
 [api]: http://dream.misasa.okayama-u.ac.jp/documentation/MedusaRestAPI/ "Medusa Rest API"
