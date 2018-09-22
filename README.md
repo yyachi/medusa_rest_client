@@ -1,4 +1,4 @@
-# medusa_rest_client
+# gem package -- medusa_rest_client
 
 A series of Ruby interfaces to Medusa
 
