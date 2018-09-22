@@ -14,6 +14,7 @@ to manage records on the Medusa programmatically.
 [medusa]: https://github.com/misasa/medusa/        "Medusa"
 [api]: http://dream.misasa.okayama-u.ac.jp/documentation/MedusaRestAPI/ "Medusa Rest API"
 [ActiveResource]: https://github.com/rails/activeresource/ "ActiveResource"
+
 # Installation
 
 Add this line to your application's Gemfile:
