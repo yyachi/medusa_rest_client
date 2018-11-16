@@ -28,9 +28,9 @@ No command is installed by this gem but one for debug.
 
 Commands are summarized as:
 
-| command   | description                                       | note  |
-|-----------|---------------------------------------------------|-------|
-| medusa    | Provide debug console for interaction with Medusa |       |
+| command   | description                                          | note  |
+|-----------|------------------------------------------------------|-------|
+| medusa    | Provide debug console during interaction with Medusa |       |
 
 
 # Usage
