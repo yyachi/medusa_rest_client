@@ -11,7 +11,10 @@ to interact with the Medusa REST API.  This gem allows Ruby developers
 to programmatically  access the API and provides some useful functions
 to manage records on the Medusa programmatically.
 
-This package is referred by [gem package -- sisyphus-for-medusa](https://github.com/misasa/sisyphus-for-medusa).
+This package is referred by [gem package -- sisyphus-for-medusa](https://github.com/misasa/sisyphus-for-medusa)
+and
+[gem package -- pmlatex](https://github.com/misasa/pmlatex).
+
 
 # Installation
 
