@@ -1,6 +1,6 @@
 # gem package -- medusa_rest_client
 
-A series of Ruby interfaces to Medusa
+A series of Ruby interfaces to Medusa.
 
 # Description
 
