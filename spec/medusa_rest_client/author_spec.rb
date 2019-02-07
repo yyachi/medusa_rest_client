@@ -1,6 +1,6 @@
 require 'spec_helper'
 
 module MedusaRestClient
-	describe Author do
-	end
+  describe Author do
+  end
 end

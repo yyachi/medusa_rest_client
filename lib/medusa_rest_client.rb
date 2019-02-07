@@ -111,14 +111,14 @@ end
 
 module ActiveResource # :nodoc:
   class Collection # :nodoc:
-  	def previous_page
-  		params = original_params.merge(:page => (original_params[:page] ? original_params[:page] - 1 : 2) )
-  		resource_class.find(:all, :params => params)  		
-  	end
+    def previous_page
+      params = original_params.merge(:page => (original_params[:page] ? original_params[:page] - 1 : 2) )
+      resource_class.find(:all, :params => params)      
+    end
 
-  	def next_page
-  		params = original_params.merge(:page => (original_params[:page] ? original_params[:page] + 1 : 2) )
-  		resource_class.find(:all, :params => params)
-  	end
+    def next_page
+      params = original_params.merge(:page => (original_params[:page] ? original_params[:page] + 1 : 2) )
+      resource_class.find(:all, :params => params)
+    end
   end
 end

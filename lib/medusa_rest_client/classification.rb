@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class Classification < Base
-	end
+  class Classification < Base
+  end
 end

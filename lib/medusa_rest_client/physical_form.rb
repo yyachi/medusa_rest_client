@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class PhysicalForm < Base
-	end
+  class PhysicalForm < Base
+  end
 end

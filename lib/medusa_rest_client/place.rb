@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class Place < Base
-	end
+  class Place < Base
+  end
 end

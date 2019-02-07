@@ -6,80 +6,80 @@ require 'medusa_rest_client'
 include MedusaRestClient
 
 def upload_file(file)
-	print "#{file} uploading..."
-	begin
-		@obj = AttachmentFile.upload(file)
-		print " <ID: #{@obj.global_id}>\n"
-	rescue => ex
-		puts ex
-	end
+  print "#{file} uploading..."
+  begin
+    @obj = AttachmentFile.upload(file)
+    print " <ID: #{@obj.global_id}>\n"
+  rescue => ex
+    puts ex
+  end
 end
 
 def remove_obj(global_id)
-	print "<ID: #{global_id}> removing..."
-	begin
-		obj = Record.find(global_id)
-		obj.destroy
-		print " OK\n"
-	rescue => ex
-		puts ex
-	end
+  print "<ID: #{global_id}> removing..."
+  begin
+    obj = Record.find(global_id)
+    obj.destroy
+    print " OK\n"
+  rescue => ex
+    puts ex
+  end
 
 end
 
 def start_console
-	if @script
-		eval @script, binding, '<main>'
-	else
-		Pry.config.prompt_name = 'medusa'
-		Pry.start
-	end		
+  if @script
+    eval @script, binding, '<main>'
+  else
+    Pry.config.prompt_name = 'medusa'
+    Pry.start
+  end   
 end
 
 global_options = {}
 global = OptionParser.new do |opts|
-	opts.banner = "medusa: an client for Medusa"
-	opts.define_head "Usage: medusa [options] [subcommand [options]]"
-	opts.separator ""
-	opts.separator "Commands:"
-	opts.separator "	medusa console"
-	opts.separator "	medusa console -e'p Specimen.find(:first)'"	
-	opts.separator "	medusa upload <file>"
-	opts.separator ""	
-	opts.separator "Examples:"
-	opts.separator "	medusa upload -h"
-	opts.separator ""
-	opts.separator "Options:"
+  opts.banner = "medusa: an client for Medusa"
+  opts.define_head "Usage: medusa [options] [subcommand [options]]"
+  opts.separator ""
+  opts.separator "Commands:"
+  opts.separator "  medusa console"
+  opts.separator "  medusa console -e'p Specimen.find(:first)'" 
+  opts.separator "  medusa upload <file>"
+  opts.separator "" 
+  opts.separator "Examples:"
+  opts.separator "  medusa upload -h"
+  opts.separator ""
+  opts.separator "Options:"
 
 
-	opts.on_tail("-?", "--help", "Show this message") do
-		puts opts
-		exit
-	end
+  opts.on_tail("-?", "--help", "Show this message") do
+    puts opts
+    exit
+  end
 
-	opts.on_tail("-v", "--[no-]verbose", "Run verbosely") do |v|
-		global_options[:verbose] = v
-	end
+  opts.on_tail("-v", "--[no-]verbose", "Run verbosely") do |v|
+    global_options[:verbose] = v
+  end
 
-	opts.on_tail("-V", "--version", "Show version") do
-		puts MedusaRestClient::VersionInfo.instance.to_markdown
-		exit
-	end
+  opts.on_tail("-V", "--version", "Show version") do
+    puts MedusaRestClient::VersionInfo.instance.to_markdown
+    exit
+  end
 end
 
 subcommands = {
-	'upload' => OptionParser.new do |opts|
-		opts.banner = "Usage: medusa upload <file>..."
-	end,
-	'remove' => OptionParser.new do |opts|
-		opts.banner = "Uage: medusa remove <global-ID>..."
-	end,
-	'console' => OptionParser.new do |opts|
-		opts.banner = "Usage: medusa console"
-		opts.on("-e command", "Specifies script from command-line.") do |v|
-			@script = v
-		end		
-	end
+  'upload' => OptionParser.new do |opts|
+    opts.banner = "Usage: medusa upload <file>..."
+  end,
+  'remove' => OptionParser.new do |opts|
+    opts.banner = "Uage: medusa remove <global-ID>..."
+  end,
+  'console' => OptionParser.new do |opts|
+    opts.banner = "Usage: medusa console"
+    opts.on("-e command", "Specifies script from command-line.") do |v|
+      @script = v
+    end   
+  end
 }
 
 global.order!
@@ -89,32 +89,32 @@ command = ARGV.shift
 subcommands[command].order! if subcommands[command]
 
 if global_options[:verbose]
-	puts "global_optios: #{global_options}"
-	if subcommands[command]
-		puts "command: #{command}"
-		puts "commad_options: #{command_options}"
-	end
+  puts "global_optios: #{global_options}"
+  if subcommands[command]
+    puts "command: #{command}"
+    puts "commad_options: #{command_options}"
+  end
 end
 
 case command
-	when "upload"
-		if ARGV.size == 0
-			puts subcommands['upload']
-			exit
-		end
-		ARGV.each do |file|
-			upload_file(file)
-		end
-	when "remove"
-		if ARGV.size == 0
-			puts subcommands['remove']
-			exit
-		end	
-		ARGV.each do |global_id|
-			remove_obj(global_id)
-		end
-	when "console"
-		start_console
-	else
-		puts global
-	end
+  when "upload"
+    if ARGV.size == 0
+      puts subcommands['upload']
+      exit
+    end
+    ARGV.each do |file|
+      upload_file(file)
+    end
+  when "remove"
+    if ARGV.size == 0
+      puts subcommands['remove']
+      exit
+    end 
+    ARGV.each do |global_id|
+      remove_obj(global_id)
+    end
+  when "console"
+    start_console
+  else
+    puts global
+  end

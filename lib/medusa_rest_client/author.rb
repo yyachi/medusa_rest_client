@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class Author < Base
-	end
+  class Author < Base
+  end
 end

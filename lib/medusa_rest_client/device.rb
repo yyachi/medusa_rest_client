@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class Device < Base
-	end
+  class Device < Base
+  end
 end

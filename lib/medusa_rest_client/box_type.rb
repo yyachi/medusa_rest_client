@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class BoxType < Base
-	end
+  class BoxType < Base
+  end
 end

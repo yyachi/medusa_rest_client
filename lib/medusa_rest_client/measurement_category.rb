@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class MeasurementCategory < Base
-	end
+  class MeasurementCategory < Base
+  end
 end

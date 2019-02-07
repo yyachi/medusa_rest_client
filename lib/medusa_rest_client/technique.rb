@@ -1,4 +1,4 @@
 module MedusaRestClient
-	class Technique < Base
-	end
+  class Technique < Base
+  end
 end
