@@ -116,7 +116,6 @@ module MedusaRestClient
     end
 
     def to_multipart_form_data(opts = {})
-
       boundary = opts[:boundary] || @@boundary
       model = opts[:model] || self.class.element_name
 
@@ -132,8 +131,19 @@ module MedusaRestClient
       end
 
       if path
+        dirname = File.dirname(path)
+        basename = File.basename(path,".*")
+        geo_path = File.join(dirname,basename + ".geo")
+        if File.file?(geo_path)
+          data << "--#{boundary}"
+          data << "Content-disposition: form-data; name=\"#{model}[affine_matrix_in_string]\""
+          data << ""
+          data << AttachmentFile.get_affine_from_geo(geo_path)
+        end
+
         filename = attributes.delete('filename') || File.basename(path)
         #filename = File.basename(path)
+
         content_type = self.class.get_content_type_from_extname(File.extname(filename)) || self.class.default_content_type      
         data << "--#{boundary}"
         data << "Content-Disposition: form-data; name=\"#{model}[data]\"; filename=\"#{filename}\""
@@ -143,10 +153,9 @@ module MedusaRestClient
           file.binmode
           file.read
         }
+        data << "--#{boundary}--"
       end
-
 #     data << ""
-      data << "--#{boundary}--"
 #     data << ""
       data.join("\r\n")
     end

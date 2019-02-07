@@ -19,6 +19,16 @@ module MedusaRestClient
       obj
     end
 
+    def self.get_affine_from_geo(filepath, opts = {})
+      if File.file?(filepath)
+        geo = YAML.load_file(filepath)
+        if geo.has_key?("affine_xy2vs")
+          array = geo["affine_xy2vs"]
+          return "[#{array.map{|a| a.join(', ')}.join(';')}]"
+        end
+      end
+
+    end
       # def self.find_by_localfile(mylocalfile)
       #   md5hash = Digest::MD5.hexdigest(File.open(mylocalfile, 'rb').read)
       #   existings = Attachment.find(:all, :params => {:md5hash => md5hash})

@@ -11,19 +11,19 @@ module MedusaRestClient
       FakeWeb.allow_net_connect = true
     end
 
-    describe "#upload_file to real server" do
+    describe "#upload_file to real server", :current => true do
       #let(:stone){ Specimen.create(:name => 'sample-1')}
       let(:remote_file){ AttachmentFile.find_or_create_by_file(upload_file) }
-      let(:upload_file){ 'tmp/Desert.jpg'}
+      let(:upload_file){ 'tmp/test_image.jpg'}
+      let(:geo_file){ 'tmp/test_image.geo'}
       let(:filename){'example.jpg'}
       before do
         setup_empty_dir('tmp')
         setup_file(upload_file)
+        setup_file(geo_file)
         remote_file
         #file = AttachmentFile.find_by_file(upload_file)
         #file.destroy
-
-
       end
       it { expect(nil).to be_nil }
 
@@ -117,7 +117,7 @@ module MedusaRestClient
               let(:obj){ Specimen.create(:name => 'specimen_1')}
               it { expect(bib.specimens[0]).to be_eql(obj) }
             end
-            context "with box", :current => true do
+            context "with box" do
               let(:obj){ Box.create(:name => 'box_1')}
               it { expect(bib.boxes[0]).to be_eql(obj)}
             end
@@ -138,13 +138,16 @@ module MedusaRestClient
       FakeWeb.allow_net_connect = true
     end
 
+
     describe "#upload_file to real server" do
       let(:stone){ Specimen.create(:name => 'sample-1')}
-      let(:upload_file){ 'tmp/Desert.jpg'}
+      let(:upload_file){ 'tmp/test_image.jpg'}
+      let(:geo_file){ 'tmp/test_image.geo'}
       let(:filename){'example.jpg'}
       before do
         setup_empty_dir('tmp')
         setup_file(upload_file)
+        setup_file(geo_file)
         stone
         @file = stone.upload_file(:file => upload_file, :filename => filename )
       end

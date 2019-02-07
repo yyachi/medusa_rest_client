@@ -2,7 +2,15 @@ require 'spec_helper'
 
 module MedusaRestClient
   describe AttachmentFile do
-
+    describe "self.get_affine_from_geo", :current => true do
+      subject { AttachmentFile.get_affine_from_geo(geo_file)}
+      let(:geo_file){ 'tmp/test_image.geo'  }
+      before do
+        setup_empty_dir('tmp')
+        setup_file(geo_file)
+      end
+      it { expect(subject).to be_eql("[10, 0, 0;0, 10, 0;0, 0, 1]")}
+    end
 
     describe ".save with new object" do
       let(:obj){ FactoryGirl.build(:attachment_file) }
@@ -28,7 +36,7 @@ module MedusaRestClient
     end
 
     describe "#post_multipart_form_data" do
-        let(:obj){ AttachmentFile.new(:file => upload_file, :filename => 'example.txt')}
+      let(:obj){ AttachmentFile.new(:file => upload_file, :filename => 'example.txt')}
       let(:upload_file){ 'tmp/upload.txt' }
       before do
         setup_empty_dir('tmp')
@@ -50,7 +58,8 @@ module MedusaRestClient
       end
 
     describe ".upload" do
-      let(:upload_file){ 'tmp/upload.txt' }
+      let(:upload_file){ 'tmp/test_image.jpg' }
+      let(:geo_file){ 'tmp/test_image.geo' }
       before do
         setup_empty_dir('tmp')
         setup_file(upload_file)
@@ -58,6 +67,13 @@ module MedusaRestClient
         AttachmentFile.upload(upload_file, :filename => 'example.txt')
       end
       it { expect(FakeWeb).to have_requested(:post, %r|/attachment_files.json|) }
+      context "with geofile" do
+        before do
+          setup_file(geo_file)
+          AttachmentFile.upload(upload_file, :filename => 'example.txt')
+        end
+        it { expect(FakeWeb).to have_requested(:post, %r|/attachment_files.json|) }
+      end
     end
 
     describe "#length" do
