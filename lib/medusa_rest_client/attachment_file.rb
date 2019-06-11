@@ -27,7 +27,13 @@ module MedusaRestClient
           return "[#{array.map{|a| a.join(', ')}.join(';')}]"
         end
       end
+    end
 
+    def dump_geofile(filepath, opts = {})
+      a,b,c,d,e,f,g,h,i = self.affine_matrix
+      geo = Hash.new
+      geo['affine_xy2vs'] = [[a,b,c],[d,e,f],[g,h,i]]
+      YAML.dump(geo,File.open(filepath,'w'))
     end
       # def self.find_by_localfile(mylocalfile)
       #   md5hash = Digest::MD5.hexdigest(File.open(mylocalfile, 'rb').read)
@@ -54,7 +60,7 @@ module MedusaRestClient
       def save
         if new?
           #create_with_upload_data
-          post_multipart_form_data(to_multipart_form_data)
+          post_multipart_form_data(to_multipart_form_data(self.attributes))
         else
           update
         end

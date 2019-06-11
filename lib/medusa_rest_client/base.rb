@@ -110,9 +110,20 @@ module MedusaRestClient
       collection_name = self.class.collection_name + '/' + self.id.to_s + '/' + AttachmentFile.collection_name
       format_extension = self.class.format_extension
           upload_path = "#{prefix}#{collection_name}#{format_extension}"
-          file.post_multipart_form_data(file.to_multipart_form_data, upload_path)
+          file.post_multipart_form_data(file.to_multipart_form_data(opts), upload_path)
           return file
       #attachment_file = AttachmentFile.upload()
+    end
+
+    def upload_image(opts = {})
+      raise "specify :file" unless opts[:file]
+      file = AttachmentFile.new(opts)
+      prefix = self.class.prefix
+      collection_name = self.class.collection_name + '/' + self.id.to_s + '/images'
+      format_extension = self.class.format_extension
+          upload_path = "#{prefix}#{collection_name}#{format_extension}"
+          file.post_multipart_form_data(file.to_multipart_form_data(opts), upload_path)
+          return file
     end
 
     def to_multipart_form_data(opts = {})
@@ -131,9 +142,13 @@ module MedusaRestClient
       end
 
       if path
-        dirname = File.dirname(path)
-        basename = File.basename(path,".*")
-        geo_path = File.join(dirname,basename + ".geo")
+        if opts[:geo_path]
+          geo_path = opts[:geo_path]
+        else
+          dirname = File.dirname(path)
+          basename = File.basename(path,".*")
+          geo_path = File.join(dirname,basename + ".geo")
+        end
         if File.file?(geo_path)
           data << "--#{boundary}"
           data << "Content-disposition: form-data; name=\"#{model}[affine_matrix_in_string]\""
@@ -142,7 +157,6 @@ module MedusaRestClient
         end
 
         filename = attributes.delete('filename') || File.basename(path)
-        #filename = File.basename(path)
 
         content_type = self.class.get_content_type_from_extname(File.extname(filename)) || self.class.default_content_type      
         data << "--#{boundary}"
@@ -155,8 +169,6 @@ module MedusaRestClient
         }
         data << "--#{boundary}--"
       end
-#     data << ""
-#     data << ""
       data.join("\r\n")
     end
 
@@ -264,6 +276,10 @@ module MedusaRestClient
 
     def attachment_files
       MyAssociation.new(self, AttachmentFile)     
+    end
+    
+    def images
+      MyAssociation.new(self, Image)
     end
 
     def bibs

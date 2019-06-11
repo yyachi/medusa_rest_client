@@ -85,7 +85,7 @@ Dir.glob("spec/steps/**/*steps.rb") { |f| load f, true }
 def setup
   MedusaRestClient::Base.site = "http://localhost:3000"
   MedusaRestClient::Base.prefix = "/"
-  MedusaRestClient::Base.user = "admin"
+  MedusaRestClient::Base.user = "dream.misasa"
   MedusaRestClient::Base.password = "password"
   MedusaRestClient::Base.logger = Logger.new(STDOUT)
     MedusaRestClient::Base.logger.level = Logger::DEBUG 
