@@ -74,6 +74,14 @@ module MedusaRestClient
         end
         it { expect(FakeWeb).to have_requested(:post, %r|/attachment_files.json|) }
       end
+
+      context "with geofile specified in options" do
+        before do
+          setup_file(geo_file)
+          AttachmentFile.upload(upload_file, :filename => 'example.txt', :geo_path => 'tmp/example.geo')
+        end
+        it { expect(FakeWeb).to have_requested(:post, %r|/attachment_files.json|) }
+      end
     end
 
     describe "#length" do

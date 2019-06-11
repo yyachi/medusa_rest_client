@@ -90,6 +90,7 @@ require 'medusa_rest_client/place'
 require 'medusa_rest_client/analysis'
 require 'medusa_rest_client/chemistry'
 require 'medusa_rest_client/attachment_file'
+require 'medusa_rest_client/image'
 require 'medusa_rest_client/bib'
 require 'medusa_rest_client/measurement_item'
 require 'medusa_rest_client/device'
@@ -101,7 +102,7 @@ require 'medusa_rest_client/unit'
 require 'medusa_rest_client/technique'
 require 'medusa_rest_client/author'
 require 'medusa_rest_client/spot'
-
+require 'medusa_rest_client/surface'
 module ActiveSupport
   Inflector.inflections do |inflect|
     inflect.irregular "specimen", "specimens"

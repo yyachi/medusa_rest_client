@@ -4,6 +4,44 @@ module MedusaRestClient
   @allow_net_connect = false
   if @allow_net_connect
 
+  describe Surface do
+    before do
+      setup
+      FakeWeb.clean_registry
+      FakeWeb.allow_net_connect = true
+    end
+
+    describe "#upload_image to real server", :current => true do
+      #let(:stone){ Specimen.create(:name => 'sample-1')}
+      let(:surface){ Surface.create(:name => 'surface_1')}
+      let(:remote_image){ surface.upload_image(:file => upload_file, :filename => 'example.jpg', :geo_path => 'tmp/example.geo') }
+      let(:upload_file){ 'tmp/test_image.jpg'}
+      let(:geo_file){ 'tmp/example.geo'}
+      let(:filename){'example.jpg'}
+      before do
+        setup_empty_dir('tmp')
+        setup_file(upload_file)
+        setup_file(geo_file)
+        surface
+        remote_image
+        surface.images.each do |surface_image|
+          surface_image.image.dump_geofile('tmp/deleteme.geo')
+        end
+      end
+      it { expect(nil).to be_nil }
+
+      after do
+        remote_image.destroy
+        surface.destroy
+      end       
+    end     
+
+
+    after do
+      FakeWeb.allow_net_connect = false
+    end   
+  end
+
   describe AttachmentFile do
     before do
       setup
@@ -11,7 +49,9 @@ module MedusaRestClient
       FakeWeb.allow_net_connect = true
     end
 
-    describe "#upload_file to real server", :current => true do
+    
+
+    describe "#upload_file to real server" do
       #let(:stone){ Specimen.create(:name => 'sample-1')}
       let(:remote_file){ AttachmentFile.find_or_create_by_file(upload_file) }
       let(:upload_file){ 'tmp/test_image.jpg'}
