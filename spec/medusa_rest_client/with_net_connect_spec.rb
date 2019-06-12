@@ -16,14 +16,19 @@ module MedusaRestClient
       let(:surface){ Surface.create(:name => 'surface_1')}
       let(:remote_image){ surface.upload_image(:file => upload_file, :filename => 'example.jpg', :geo_path => 'tmp/example.geo') }
       let(:upload_file){ 'tmp/test_image.jpg'}
+      let(:replace_file){ 'tmp/Desert.jpg'}
       let(:geo_file){ 'tmp/example.geo'}
       let(:filename){'example.jpg'}
       before do
         setup_empty_dir('tmp')
         setup_file(upload_file)
+        setup_file(replace_file)
         setup_file(geo_file)
         surface
         remote_image
+        image_id = remote_image.id
+        remote_image = AttachmentFile.find(image_id)
+        remote_image.update_file(replace_file)
         surface.images.each do |surface_image|
           surface_image.image.dump_geofile('tmp/deleteme.geo')
         end

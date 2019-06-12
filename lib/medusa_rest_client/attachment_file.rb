@@ -5,6 +5,7 @@ module MedusaRestClient
       md5hash = Digest::MD5.hexdigest(File.open(filepath, 'rb').read)
       self.find(:first, :params => {:q => {:md5hash_eq => md5hash}} )
     end
+
     def self.find_or_create_by_file(filepath)
       mi = self.find_by_file(filepath)
       return mi if mi
@@ -17,6 +18,13 @@ module MedusaRestClient
       raise "#{filepath} does not exist" unless File.exists?(filepath)
       obj = AttachmentFile.create(opts.merge(:file => filepath))
       obj
+    end
+
+    def update_file(filepath, opts = {})
+      raise "#{filepath} does not exist" unless File.exists?(filepath)
+      self.attributes.merge(opts.merge(:file => filepath)) 
+      data = to_multipart_form_data
+      put_multipart_form_data(data)
     end
 
     def self.get_affine_from_geo(filepath, opts = {})

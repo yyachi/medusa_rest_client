@@ -72,6 +72,20 @@ module MedusaRestClient
       end     
     end
 
+
+    def put_multipart_form_data(data, put_path = element_path)
+      raise "could not find boundary" unless md = data.match(/^--(.*)\r\n/)
+      boundary = md[1]
+      header ={
+            'Content-Length' => data.length.to_s,
+            'Content-Type' => "multipart/form-data; boundary=#{boundary}",
+            'Accept' => 'application/json'
+          }
+      connection.put(put_path, data, header).tap do |response|
+        self.id = id_from_response(response)
+        return load_attributes_from_response(response)
+      end     
+    end
     #def self.element_path_with_format_extension(id, prefix_options = {}, query_options = nil)
     # check_prefix_options(prefix_options)
     # prefix_options, query_options = split_options(prefix_options) if query_options.nil?
