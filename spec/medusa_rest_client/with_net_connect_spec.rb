@@ -28,7 +28,7 @@ module MedusaRestClient
         remote_image
         image_id = remote_image.id
         remote_image = AttachmentFile.find(image_id)
-        remote_image.update_file(replace_file)
+        remote_image.update_file(replace_file, :geo_path => geo_file)
         surface.images.each do |surface_image|
           surface_image.image.dump_geofile('tmp/deleteme.geo')
         end
