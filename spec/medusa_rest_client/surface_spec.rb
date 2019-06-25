@@ -23,5 +23,31 @@ module MedusaRestClient
       end
       it { expect(FakeWeb).to have_requested(:post, %r|/surfaces/10/images.json|) }
     end
+
+    describe "#make_tiles" do
+      before do
+        surface = FactoryGirl.build(:surface, id: 10)
+        FakeWeb.register_uri(:post, %r|/surfaces/10/tiles.json|, :body => nil, :status => ["201", "Created"])
+        surface.make_tiles
+      end
+      it { expect(FakeWeb).to have_requested(:post, %r|/surfaces/10/tiles.json|) }
+    end
+
+    describe "#make_image_tiles" do
+      before do
+        surface = FactoryGirl.build(:surface, id: 10)
+        FakeWeb.register_uri(:post, %r|/surfaces/10/images/55271/tiles.json|, :body => nil, :status => ["201", "Created"])
+        surface.make_image_tiles(55271)
+      end
+      it { expect(FakeWeb).to have_requested(:post, %r|/surfaces/10/images/55271/tiles.json|) }
+    end
+    describe "#make_layer_tiles" do
+      before do
+        surface = FactoryGirl.build(:surface, id: 10)
+        FakeWeb.register_uri(:post, %r|/surfaces/10/layers/20/tiles.json|, :body => nil, :status => ["201", "Created"])
+        surface.make_layer_tiles(20)
+      end
+      it { expect(FakeWeb).to have_requested(:post, %r|/surfaces/10/layers/20/tiles.json|) }
+    end
   end
 end
