@@ -292,9 +292,9 @@ module MedusaRestClient
       MyAssociation.new(self, AttachmentFile)     
     end
     
-    def images
-      MyAssociation.new(self, Image)
-    end
+    #def images
+    #  MyAssociation.new(self, Image)
+    #end
 
     def bibs
       MyAssociation.new(self, Bib)      

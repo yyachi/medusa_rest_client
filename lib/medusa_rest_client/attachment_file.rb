@@ -75,6 +75,12 @@ module MedusaRestClient
         end
       end
 
+
+      def create_spot(spot_params)
+        spot = Spot.new(spot_params)
+        spot.prefix_options[:attachment_file_id] = self.id
+        spot.save
+      end      
       # def create_with_upload_data
       #   boundary="-------------------3948A8"
       #   data = make_post_data(boundary,self.class.element_name,self.attributes)

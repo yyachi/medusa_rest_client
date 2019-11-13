@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    medusa_rest_client (0.1.9)
+    medusa_rest_client (0.1.10)
       activeresource (~> 4.0.0)
       gli (~> 2.12)
       pry (~> 0.9)
@@ -47,7 +47,7 @@ GEM
       reentrant_flock
       sinatra (>= 1.2.7)
     gherkin (5.0.0)
-    gli (2.18.0)
+    gli (2.19.0)
     httpclient (2.8.3)
     i18n (0.9.1)
       concurrent-ruby (~> 1.0)
@@ -123,4 +123,4 @@ DEPENDENCIES
   webmock (~> 1.20.4)
 
 BUNDLED WITH
-   1.15.3
+   1.17.3
