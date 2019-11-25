@@ -2,10 +2,10 @@ require 'medusa_rest_client'
 require 'factory_girl'
 require 'fakeweb'
 require 'fakeweb_matcher'
-require 'simplecov'
-require 'simplecov-rcov'
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
-SimpleCov.start
+#require 'simplecov'
+#require 'simplecov-rcov'
+#SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+#SimpleCov.start
 
 
 module FactoryGirl
@@ -83,7 +83,7 @@ FactoryGirl.find_definitions
 Dir.glob("spec/steps/**/*steps.rb") { |f| load f, true }
 
 def setup
-  MedusaRestClient::Base.site = "http://web:3001"
+  MedusaRestClient::Base.site = "http://localhost:3000"
   MedusaRestClient::Base.prefix = "/"
   MedusaRestClient::Base.user = "dream.misasa"
   MedusaRestClient::Base.password = "password"

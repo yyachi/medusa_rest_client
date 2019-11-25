@@ -308,5 +308,9 @@ module MedusaRestClient
       MyAssociation.new(self, Spot)     
     end
 
+    def tables
+      MyAssociation.new(self, Table)
+    end
+
   end
 end

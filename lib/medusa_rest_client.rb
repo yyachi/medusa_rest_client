@@ -104,6 +104,7 @@ require 'medusa_rest_client/author'
 require 'medusa_rest_client/spot'
 require 'medusa_rest_client/surface'
 require 'medusa_rest_client/surface_image'
+require 'medusa_rest_client/table'
 
 module ActiveSupport
   Inflector.inflections do |inflect|

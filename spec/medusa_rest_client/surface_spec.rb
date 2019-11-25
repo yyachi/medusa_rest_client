@@ -36,6 +36,7 @@ module MedusaRestClient
     describe "#make_image_tiles" do
       before do
         surface = FactoryGirl.build(:surface, id: 10)
+        FakeWeb.register_uri(:get, %r|/surfaces/10/images/55271.json|, :body => FactoryGirl.build(:surface_image, surface_id:10, image_id:55271).to_json, :status => ["200", "OK"])
         FakeWeb.register_uri(:post, %r|/surfaces/10/images/55271/tiles.json|, :body => nil, :status => ["201", "Created"])
         surface.make_image_tiles(55271)
       end

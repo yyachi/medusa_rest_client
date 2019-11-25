@@ -11,7 +11,21 @@ module MedusaRestClient
       FakeWeb.allow_net_connect = true
     end
 
-    describe "spots", :current => true do
+    describe "table", :current => true do
+      subject{ parent.relatives << child }
+      let(:parent){ Record.find(parent_id) }  
+      let(:parent_id){ '20191125045432-046260' }
+      let(:child){ Record.find(child_id) }  
+      let(:child_id){ '20191115091714-686942' }
+
+      before do
+        parent
+        child
+      end
+      it { expect{subject}.not_to raise_error }
+    end
+
+    describe "spots" do
       let(:surface){ Surface.create(:name => "surface_#{number}")}
       let(:number){ ''.tap { |s| 6.times { s << rand(0..9).to_s } }}
       let(:upload_file){ 'tmp/test_image.jpg'}

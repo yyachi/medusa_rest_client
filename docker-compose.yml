@@ -1,0 +1,55 @@
+version: '2'
+services:
+  postgres:
+    image: postgres:9
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  redis:
+    image: redis:4.0
+  app:
+    image: misasa/medusa:latest
+    working_dir: /usr/src/app
+
+  web:
+    extends:
+      service: app
+    environment:
+      - "RAILS_ENV=development"
+      - "REDIS_URL=redis://redis:6379"      
+    command: bundle exec rails s -p 3001 -b '0.0.0.0'
+    volumes:
+      - ./data/medusa/config:/usr/src/app/config
+      - ./data/medusa/public/system:/usr/src/app/public/system
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+  worker:
+    extends:
+      service: app
+    environment:
+      - "RAILS_ENV=development"
+      - "REDIS_URL=redis://redis:6379"      
+    volumes:
+      - ./data/medusa/config:/usr/src/app/config
+      - ./data/medusa/public/system:/usr/src/app/public/system
+    command: bundle exec sidekiq
+    links:
+      - postgres
+      - redis
+  client:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - web
+      - worker
+volumes:
+  postgres_data:
+    external: true
+  stone_data:
+    driver_opts:
+      type: nfs
+      o: "addr=172.24.1.36,nfsvers=4"
+      device: ":/"

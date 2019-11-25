@@ -16,7 +16,6 @@ module MedusaRestClient
       end
 
       it { 
-        p subject
         expect(FakeWeb).to have_requested(:get, %r|/surfaces/#{surface.id}/images.json|)        
       }
     end

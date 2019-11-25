@@ -48,7 +48,8 @@ module MedusaRestClient
       MedusaRestClient::Place => [Specimen, AttachmentFile, Bib],
       MedusaRestClient::Analysis => [AttachmentFile, Bib],
       MedusaRestClient::AttachmentFile => [Box, Specimen, Place, Analysis, Bib],
-      MedusaRestClient::Bib => [Box, Specimen, Place, Analysis, AttachmentFile],            
+      MedusaRestClient::Bib => [Box, Specimen, Place, Analysis, AttachmentFile, Table],
+      MedusaRestClient::Table => [Specimen, Analysis],
     }
   end
 

@@ -5,7 +5,7 @@ module MedusaRestClient
     end
 
     def images(scope=:all)
-      SurfaceImage.find(scope, :params => { :surface_id => to_param })      
+      SurfaceImage.find(scope, :params => { :surface_id => id })      
     end
 
     def create_spot(spot_params)
