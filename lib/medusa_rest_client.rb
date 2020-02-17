@@ -3,6 +3,14 @@ require 'active_resource'
 require 'yaml'
 require 'pathname'
 
+module Warning
+  def warn(str)
+    return if str.match?("gems")
+
+    super
+  end
+end
+
 module MedusaRestClient
   # Your code goes here...
   @pref_path = nil
