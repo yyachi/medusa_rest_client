@@ -23,6 +23,7 @@ module MedusaRestClient
     def update_file(filepath, opts = {})
       raise "#{filepath} does not exist" unless File.exists?(filepath)
       self.file = filepath
+      self.filename = opts[:filename] if opts[:filename]
       self.geo_path = opts[:geo_path] if opts[:geo_path]
       data = to_multipart_form_data
       put_multipart_form_data(data)
