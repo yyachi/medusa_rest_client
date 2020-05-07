@@ -1,11 +1,40 @@
 module MedusaRestClient
   class Surface < Base
+    def self.new(attributes = {}, persisted = false)
+      map_data = attributes.delete("map_data")
+      super(attributes, persisted)
+    end
+
     def to_json(options={})
       super({ :root => self.class.element_name }.merge(options))
     end
 
     def images(scope=:all)
       SurfaceImage.find(scope, :params => { :surface_id => id })      
+    end
+
+    def layers(scope=:all)
+      SurfaceLayer.find(scope, :params => { :surface_id => id })
+    end
+
+    def create_or_find_layer_by_name(layer_name)
+      layer_zip = self.attributes["layers"]
+      layer_names = layer_zip.map{|id,name| name }
+      idx = layer_names.index(layer_name)
+      if idx
+        layer_id = layer_zip[idx][0]
+        layer = SurfaceLayer.find(layer_id, :params => { :surface_id => id }) if idx
+      else
+        layer = create_layer(:name => layer_name)
+      end
+      layer
+    end
+
+    def create_layer(layer_params)
+      layer = SurfaceLayer.new(layer_params)
+      layer.prefix_options[:surface_id] = self.id
+      p layer
+      layer.save
     end
 
     def create_spot(spot_params)

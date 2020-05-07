@@ -42,9 +42,9 @@ services:
     build: .
     volumes:
       - .:/usr/src/app
-    depends_on:
-      - web
-      - worker
+    #depends_on:
+    #  - web
+    #  - worker
 volumes:
   postgres_data:
     external: true

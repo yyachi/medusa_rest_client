@@ -2,6 +2,42 @@ require 'spec_helper'
 
 module MedusaRestClient
   describe Record do
+    describe ".instantiate_record" do
+      subject { Record.instantiate_record(data)}
+      let(:data){ {"datum_type" => "Surface", "datum_attributes" => {"id" => 1, "name" => "hoge"}} }
+      it {
+        expect(subject).to be_an_instance_of(MedusaRestClient::Surface) 
+      }
+      context "with real data" do
+        let(:data){ {"datum_type" => "Surface", "datum_attributes" => {"id" => 86,"name" => "surface MCS-202004","layers" => [[215,"s85-12C14N-int"],[214,"s85-12C12C-int"],[212,"s85-16O1H-int"],[211,"s85-Si28-int"],[239,"XRAY-Cs"],[238,"XRAY-Au"],[237,"XRAY-Ti"],[236,"XRAY-Si"],[235,"XRAY-S"],[234,"XRAY-P"],[233,"XRAY-O"],[232,"XRAY-Ni"],[231,"XRAY-Na"],[230,"XRAY-Mn"],[229,"XRAY-Mg"],[228,"XRAY-K"],[227,"XRAY-Fe"],[226,"XRAY-F"],[225,"XRAY-Cr"],[224,"XRAY-Cl"],[223,"XRAY-Ca"],[222,"XRAY-C"],[210,"XRAY-Al"],[209,"XRAY-BSE"],[187,"COMP"],[190,"COMPx1000"],[189,"TOPO"],[188,"OPT"]]}} }
+        it {
+          expect(subject).to be_an_instance_of(MedusaRestClient::Surface) 
+        }  
+      end
+    end
+
+    describe ".find", :current => true do
+      subject{ Record.find(global_id, opts) } 
+      let(:global_id){ '0000-001' }
+      let(:opts){ {} }
+      let(:body){
+        #'{"id":354100,"datum_id":86,"datum_type":"Surface","datum_attributes":{"id":86,"name":"surface hoge"}}'
+        File.open('./spec/fixtures/files/surface.json') do |file|
+          file.read
+        end
+      }
+      let(:obj){ FactoryGirl.remote(:stone)}
+      before do
+        obj
+        FakeWeb.register_uri(:get, %r|/records/#{global_id}.json|, :body => body, :status => ["200", "Ok"])
+      end
+
+      it {
+        subject 
+        expect(FakeWeb).to have_requested(:get, %r|/records/#{global_id}.json|) 
+      }
+    end
+
     describe ".download_casteml" do
       subject{ Record.download_casteml(global_id, opts) } 
       let(:filename){ global_id + ".pml"}
