@@ -68,7 +68,7 @@ module MedusaRestClient
        }
     end
 
-    describe "inventory", :current => true do
+    describe "inventory" do
       subject{ box.inventory item}
       let(:box){ FactoryGirl.remote(:box, id: box_id) }
       let(:box_id){ 10 }
@@ -234,7 +234,7 @@ module MedusaRestClient
 
     end
 
-    describe "chdir", :current => true do
+    describe "chdir" do
       subject{ Box.chdir(path) } 
       let(:home_path){ '/ISEI/main'}
       let(:global_id){ '0000-001' }

@@ -16,7 +16,7 @@ module MedusaRestClient
       end
     end
 
-    describe ".find", :current => true do
+    describe ".find" do
       subject{ Record.find(global_id, opts) } 
       let(:global_id){ '0000-001' }
       let(:opts){ {} }

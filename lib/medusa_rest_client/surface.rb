@@ -33,7 +33,6 @@ module MedusaRestClient
     def create_layer(layer_params)
       layer = SurfaceLayer.new(layer_params)
       layer.prefix_options[:surface_id] = self.id
-      p layer
       layer.save
     end
 

@@ -11,7 +11,7 @@ module MedusaRestClient
       FakeWeb.allow_net_connect = true
     end
 
-    describe "table", :current => true do
+    describe "table" do
       subject{ parent.relatives << child }
       let(:parent){ Record.find(parent_id) }  
       let(:parent_id){ '20191125045432-046260' }
