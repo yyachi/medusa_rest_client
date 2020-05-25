@@ -7,7 +7,7 @@ module MedusaRestClient
         ActiveResource::Base.logger.level = Logger::DEBUG
     end
 
-    describe "analysis.chemistries", :current => true do
+    describe "analysis.chemistries" do
       subject{ analysis.chemistries }
       let(:analysis){ FactoryGirl.remote(:analysis, id: 2530) }
       before do
@@ -21,7 +21,7 @@ module MedusaRestClient
       }
     end
 
-    describe ".create", :current => true do
+    describe ".create" do
       #let(:analysis){ Analysis.create(:name => 'deleteme')}
       let(:analysis){ double('analysis', :id => 110, :name => 'test').as_null_object }
       before do

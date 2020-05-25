@@ -2,7 +2,7 @@ require 'spec_helper'
 
 module MedusaRestClient
   describe AttachmentFile do
-    describe "self.get_affine_from_geo", :current => true do
+    describe "self.get_affine_from_geo" do
       subject { AttachmentFile.get_affine_from_geo(geo_file)}
       let(:geo_file){ 'tmp/test_image.geo'  }
       before do
@@ -94,7 +94,7 @@ module MedusaRestClient
       }
     end
 
-    describe "#height", :current => true do
+    describe "#height" do
       subject{ obj.height }
       let(:obj){ AttachmentFile.new(:original_geometry => "#{width}x#{height}")}
       let(:width){ 1947 }
@@ -104,7 +104,7 @@ module MedusaRestClient
       }
     end
 
-    describe "#width", :current => true do
+    describe "#width" do
       subject{ obj.width }
       let(:obj){ AttachmentFile.new(:original_geometry => "#{width}x#{height}")}
       let(:width){ 1947 }

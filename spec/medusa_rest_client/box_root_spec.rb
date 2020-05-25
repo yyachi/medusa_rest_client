@@ -12,7 +12,7 @@ module MedusaRestClient
       it { expect(BoxRoot.new).to be_a_kind_of(Box) }     
     end
 
-    describe ".entries", :current => true do
+    describe ".entries" do
       subject { BoxRoot.entries }
       #let(:box_root){ BoxRoot.new }
 

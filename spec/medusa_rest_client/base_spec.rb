@@ -43,7 +43,7 @@ module MedusaRestClient
     end
 
 
-                describe "#lose", :current => true do
+                describe "#lose" do
                   subject { stone.lose }
       let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
       let(:stone_id){ 10 }
@@ -58,7 +58,7 @@ module MedusaRestClient
                   }
                 end
 
-    describe "#update_record_property", :current => true do
+    describe "#update_record_property" do
       subject { stone.update_record_property(attrib) }
       let(:stone){ FactoryGirl.remote(:stone, id: stone_id) }
       let(:stone_id){ 10 }

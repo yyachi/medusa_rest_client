@@ -85,7 +85,7 @@ module MedusaRestClient
         }
       end
 
-      context "#.empty?", :current => true do
+      context "#.empty?" do
         before do
           FakeWeb.register_uri(:get, %r|boxes/#{obj.id}/specimens.json|, :body => [].to_json, :status => ["200", ""])                   
           association

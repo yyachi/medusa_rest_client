@@ -27,7 +27,7 @@ module MedusaRestClient
         }
       end
 
-      context "with root path", :current => true do
+      context "with root path" do
         subject{ Stone.find_by_path(path) }
         let(:path){ '/deleteme-1' }
         let(:stone){ double(:stone) }
@@ -116,7 +116,7 @@ module MedusaRestClient
       it { expect(FakeWeb).to have_requested(:post, %r|/specimens/10/attachment_files.json|) }
     end
 
-    describe "#upload_file with tmpfile", :current => true do
+    describe "#upload_file with tmpfile" do
       #let(:upload_file){ tempfile.path }
       let(:temp){ Tempfile.new('foo') }
       before do
