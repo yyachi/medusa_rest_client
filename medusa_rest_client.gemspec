@@ -31,7 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "factory_girl", "~> 4.4"
   spec.add_development_dependency "fakeweb", "~> 1.3"
   spec.add_development_dependency "fakeweb-matcher", "~> 1.2"
-  spec.add_development_dependency "geminabox", "~> 0.12"
+  spec.add_development_dependency "geminabox", ">= 0.13.10"
   spec.add_development_dependency "webmock", "~> 1.20.4"
 #  spec.add_development_dependency "simplecov-rcov", "~> 0.2.3"
 #  spec.add_development_dependency "rspec_junit_formatter", "~> 0.2.0"  
